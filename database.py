@@ -81,8 +81,8 @@ class Database():
         found = str(self.crsr.fetchone())
         self.cleanup()
         return self.trim(found)
-        
-    def cleanup(self):
+
+    def cleanUp(self):
         try:
             self.crsr.nextset()
             self.crsr.close()

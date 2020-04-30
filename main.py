@@ -12,7 +12,7 @@ bot = discordBot.dBot(command_prefix=os.environ['BOT_PREFIX'], help_command=dHel
 
 bot.load_extension("cogs.twitchCog")
 
-bot.run('NjIxNTU2MTk4Mzc4MDQ1NDQw.XiJ_Wg.Z4wQgqZFNA1fUH3k_mT-LiwhtAs')
+bot.run(os.environ['DISCORD_ID'])
 
 @atexit.register
 def term():

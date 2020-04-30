@@ -40,4 +40,4 @@ def runOnFirstStart():
     sqldbase.createTable('tquotes', tQuoteCols, 'number')
 
 
-    sqldbase.cleanup()
+    sqldbase.cleanUp()
