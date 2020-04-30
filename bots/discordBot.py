@@ -1,4 +1,6 @@
 import discord
+import os
+
 from globals import checkLaunch
 from globals import sqlConfig
 from globals import twitch
