@@ -19,6 +19,3 @@ class Bot(commands.Bot):
         self.userData = await self.get_users(os.environ['CHANNEL'])
         self.userID = self.userData[0][0]
         print(self.userID)
-
-bot = Bot()
-bot.run()
