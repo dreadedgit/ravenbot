@@ -38,4 +38,4 @@ class dBot(commands.Bot):
         print('= ' + str(self.user.id))
         print('=---------------------------=')
         print('= logged into twitch as')
-        print('= ' + twitch.bot.nick)
+        print('= ' + os.getenv('BOT_NICK'))
