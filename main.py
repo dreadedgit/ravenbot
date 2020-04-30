@@ -18,12 +18,12 @@ try:
 except FileNotFoundError:
     _l = '0'
 
-dHelp = commands.DefaultHelpCommand()
-bot = discordBot.dBot(command_prefix=os.environ['BOT_PREFIX'], help_command=dHelp, description='RavenBot v0.1')
+#dHelp = commands.DefaultHelpCommand()
+#bot = discordBot.dBot(command_prefix=os.environ['BOT_PREFIX'], help_command=dHelp, description='RavenBot v0.1')
 
-bot.load_extension("cogs.twitchCog")
+#bot.load_extension("cogs.twitchCog")
 
-bot.run(os.environ['DISCORD_ID'])
+#bot.run(os.environ['DISCORD_ID'])
 
 def writeLaunched():
     with open("launched", "w") as outfile:
@@ -33,4 +33,4 @@ def writeLaunched():
 def term():
     wasLaunched(1)
     writeLaunched()
-    bot.logout()
+    #bot.logout()
