@@ -3,7 +3,7 @@ from globals import checkLaunch
 from globals import twitch
 from discord.ext import commands
 
-class DiscordBot(commands.Bot):
+class dBot(commands.Bot):
 
     async def on_ready(self):
         if checkLaunch.popDBase():

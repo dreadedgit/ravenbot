@@ -14,8 +14,6 @@ bot.load_extension("cogs.twitchCog")
 
 bot.run(os.environ['DISCORD_ID'])
 
-
-
 @atexit.register
 def term():
     checkLaunch.wasLaunched(1)
