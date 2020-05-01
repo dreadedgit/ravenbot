@@ -11,6 +11,7 @@ dHelp = commands.DefaultHelpCommand()
 bot = discordBot.dBot(command_prefix=os.getenv('BOT_PREFIX'), help_command=dHelp, description='RavenBot v0.1')
 
 bot.load_extension("cogs.twitchCog")
+bot.load_extension("cogs.updateCog")
 
 bot.run(os.getenv('DISCORD_ID'))
 

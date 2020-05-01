@@ -7,7 +7,8 @@ class UpdateCog(commands.cog):
         self.discord_bot = bot
 
     @commands.Cog.listener()
-    async def on_
+    async def on_guild_emojis_update(self, guild, before, after):
+        print('test')
 
 
 
