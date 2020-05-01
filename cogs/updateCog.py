@@ -1,7 +1,7 @@
 from discord.ext import commands
 from globals import sqlConfig
 
-class UpdateCog(commands.cog):
+class UpdateCog(commands.Cog):
 
     def __init__(self, bot):
         self.discord_bot = bot

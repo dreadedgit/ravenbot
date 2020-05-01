@@ -10,8 +10,8 @@ checkLaunch.createDBase()
 dHelp = commands.DefaultHelpCommand()
 bot = discordBot.dBot(command_prefix=os.getenv('BOT_PREFIX'), help_command=dHelp, description='RavenBot v0.1')
 
-bot.add_cog("cogs.twitchCog")
-bot.add_cog("cogs.updateCog")
+bot.load_extension("cogs.twitchCog")
+bot.load_extension("cogs.updateCog")
 
 bot.run(os.getenv('DISCORD_ID'))
 
