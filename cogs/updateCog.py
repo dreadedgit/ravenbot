@@ -6,19 +6,19 @@ class UpdateCog(commands.Cog):
     def __init__(self, bot):
         self.discord_bot = bot
         self.dbase = sqlConfig.sqldbase
+        self.removed = []
+        self.added = []
 
     @commands.Cog.listener()
     async def on_guild_emojis_update(self, guild, before, after):
-
-
         for e in before:
             if e not in after:
-                removed.append(e)
+                self.removed.append(e)
         for e in after:
             if e not in before:
-                added.append(e)
+                self.added.append(e)
 
-        for e in added:
+        for e in self.added:
             if e.animated is True:
                 fullemote = '<a:' + str(e.name).replace('\'', '') + ':' + str(e.id) + '>'
             else:
@@ -27,8 +27,8 @@ class UpdateCog(commands.Cog):
             emoteInfo = [str(e.name), str(e.id), fullemote, str(guild.id)]
             self.dbase.dataInsert('demotes', sqlConfig.dEmotes, emoteInfo)
 
-        for e in removed:
-            self.dbase.deleteEntry('demotes', 'emoteID', str(e.id))
+        for e in self.removed:
+            self.dbase.deleteEntry('demotes', 'emoteID', e.id)
 
 
 
