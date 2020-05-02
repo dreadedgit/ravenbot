@@ -75,12 +75,10 @@ class Database():
         self.cleanup()
         return self.trim(found)
 
-    def rolePull(self, s, n):
-        com = "SELECT roleID FROM dRoles WHERE serverID='" + s + "' AND name='" + n + "';"
+    def deleteEntry(self, t, c, v):
+        com = "DELETE FROM " + t + " WHERE " + c + "='" + v + "';"
         self.execute(com)
-        found = str(self.crsr.fetchone())
-        self.cleanup()
-        return self.trim(found)
+        self.commit()
 
     def cleanUp(self):
         try:
