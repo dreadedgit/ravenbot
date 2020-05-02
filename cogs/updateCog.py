@@ -28,7 +28,7 @@ class UpdateCog(commands.Cog):
             self.dbase.dataInsert('demotes', sqlConfig.dEmotes, emoteInfo)
 
         for e in self.removed:
-            self.dbase.deleteEntry('demotes', 'emoteID', e.id)
+            self.dbase.deleteEntry('demotes', 'emoteID', str(e.id))
 
 
 
