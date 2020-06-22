@@ -4,7 +4,7 @@ from twitchio.ext import commands as commands
 import settings
 
 
-class RavenFeetBot(commands.Bot):
+class RaphTwitch(commands.Bot):
 
     def __init__(self, bot):
         self.discord_bot = bot
@@ -17,4 +17,4 @@ class RavenFeetBot(commands.Bot):
 
 
 def setup(bot):
-    bot.add_cog(RavenFeetBot(bot))
+    bot.add_cog(RaphTwitch(bot))
