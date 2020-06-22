@@ -4,7 +4,7 @@ from twitchio.ext import commands as commands
 import settings
 
 
-class RaphTwitch(commands.Bot):
+class RaphTwitch(commands.Bot, discord_commands.Cog):
 
     def __init__(self, bot):
         self.discord_bot = bot
