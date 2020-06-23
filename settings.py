@@ -11,12 +11,15 @@ VERSION = os.getenv("VERSION")
 DISCORD_ID = os.getenv("DISCORD_ID")
 SERVER_ID = os.getenv("SERVER_ID")
 
-#TWITCH BOT
+# TWITCH API
 TWITCH_ID = os.getenv("TWITCH_ID")
+TWITCH_SECRET = os.getenv("TWITCH_SECRET")
+
+# TWITCH BOT
 IRC_TOKEN = os.getenv("IRC_TOKEN")
 NICK = os.getenv("NICK")
 CHANNEL = os.getenv("CHANNEL")
-TWITCH_SECRET = os.getenv("TWITCH_SECRET")
+
 
 
 

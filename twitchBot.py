@@ -1,4 +1,4 @@
-from twitchio.ext import commands
+from twitchio.ext import commands as commands
 
 import settings
 
@@ -25,19 +25,3 @@ class RaphTwitch(commands.Bot):
     async def social_message(self, ctx):
         await ctx.send('Twitter: https://twitter.com/dreadedrta')
         await ctx.send('Discord: https://discord.gg/X2fsxAM')
-
-    @commands.command(name='ban')
-    async def ban_command(self, ctx, *args):
-        if len(args) > 1:
-            to_ban = args[0]
-            new_args = []
-            for a in args:
-                if a == to_ban:
-                    continue
-                new_args.append(a)
-            if new_args[0] == 'for':
-                del new_args[0]
-            message = ' '.join(new_args)
-            await ctx.send(to_ban + ' has been banned for ' + message)
-        else:
-            await ctx.send('USAGE: !ban {user} {reason}')
