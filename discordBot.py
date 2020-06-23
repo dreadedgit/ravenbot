@@ -30,22 +30,28 @@ class Raph(commands.Bot):
         if member.guild == self.guild:
             await member.add_roles(self.memers)
 
-    async def on_reaction_add(self, reaction, user):
-        if user.guild == self.guild:
-            if reaction.message.channel == self.roleAssignChannel:
-                if reaction.emoji == self.pingmeReaction:
-                    await user.add_roles(self.pingme)
-                elif reaction.emoji == self.runnerReaction:
-                    await user.add_roles(self.peeporunners)
+    async def on_raw_reaction_add(self, event):
+        message = await self.roleAssignChannel.fetch_message(event.message_id)
+        reaction = discord.utils.find(lambda r: r.emoji == event.emoji, message.reactions)
+        if event.guild_id == self.guild.id:
+            if event.channel_id == self.roleAssignChannel.id:
+                if event.emoji == self.pingmeReaction:
+                    await event.member.add_roles(self.pingme)
+                    print('ping')
+                elif event.emoji == self.runnerReaction:
+                    await event.member.add_roles(self.peeporunners)
+                    print('run')
                 else:
-                    await reaction.remove(user)
+                    await reaction.remove(event.member)
+                    print('other')
 
-    async def on_reaction_remove(self, reaction, user):
-        if user.guild == self.guild:
-            if reaction.message.channel == self.roleAssignChannel:
-                if reaction.emoji == self.pingmeReaction:
+    async def on_raw_reaction_remove(self, event):
+        user = discord.utils.find(lambda u: u.id == event.user_id, self.guild.members)
+        if event.guild_id == self.guild.id:
+            if event.channel_id == self.roleAssignChannel.id:
+                if event.emoji == self.pingmeReaction:
                     await user.remove_roles(self.pingme)
-                elif reaction.emoji == self.runnerReaction:
+                elif event.emoji == self.runnerReaction:
                     await user.remove_roles(self.peeporunners)
 
 
