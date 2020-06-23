@@ -16,7 +16,6 @@ class Raph(commands.Bot):
         self.roleAssignChannel = None
 
     async def on_ready(self):
-        print('logged in to discord')
         self.guild = discord.utils.find(lambda g: g.name == 'RavenFeet Shareholders', self.guilds)
         self.memers = discord.utils.find(lambda r: r.name == 'memers', self.guild.roles)
         self.peeporunners = discord.utils.find(lambda r: r.name == 'peeporunners', self.guild.roles)
@@ -24,7 +23,7 @@ class Raph(commands.Bot):
         self.pingme = discord.utils.find(lambda r: r.name == 'ping me', self.guild.roles)
         self.pingmeReaction = discord.utils.find(lambda e: e.name == 'WeHateTwink', self.guild.emojis)
         self.roleAssignChannel = discord.utils.find(lambda c: c.name == 'role-assign', self.guild.channels)
-        print(self.guild.name)
+        print(f'Logged into Discord | {self.guild.name}')
 
     async def on_member_join(self, member):
         if member.guild == self.guild:

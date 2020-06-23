@@ -1,20 +1,15 @@
-from discord.ext import commands as discord_commands
-from twitchio.ext import commands as commands
+from discord.ext import commands
 
-import settings
+import twitchBot
 
 
-class RaphTwitch(commands.Bot, discord_commands.Cog):
+class TwitchBot(commands.Cog):
 
     def __init__(self, bot):
-        self.discord_bot = bot
-        super().__init__(irc_token=settings.IRC_TOKEN,
-                         nick=settings.NICK,
-                         prefix=settings.COMMAND_PREFIX,
-                         initial_channels=[settings.CHANNEL])
-
-        self.loop.create_task(self.start())
+        self.bot = bot
+        twitch = twitchBot.RaphTwitch()
+        twitch.loop.create_task(twitch.start())
 
 
 def setup(bot):
-    bot.add_cog(RaphTwitch(bot))
+    bot.add_cog(TwitchBot(bot))
