@@ -31,8 +31,6 @@ class Raph(commands.Bot):
             await member.add_roles(self.memers)
 
     async def on_raw_reaction_add(self, event):
-        message = await self.roleAssignChannel.fetch_message(event.message_id)
-
         if event.guild_id == self.guild.id:
             if event.channel_id == self.roleAssignChannel.id:
                 if event.emoji == self.pingmeReaction:
@@ -42,6 +40,7 @@ class Raph(commands.Bot):
                     await event.member.add_roles(self.peeporunners)
                     print('run')
                 else:
+                    message = await self.roleAssignChannel.fetch_message(event.message_id)
                     reaction = discord.utils.find(lambda r: r.emoji == event.emoji, message.reactions)
                     await reaction.remove(event.member)
                     print('other')
@@ -51,8 +50,10 @@ class Raph(commands.Bot):
         if event.guild_id == self.guild.id:
             if event.channel_id == self.roleAssignChannel.id:
                 if event.emoji == self.pingmeReaction:
+                    print('remove ping')
                     await user.remove_roles(self.pingme)
                 elif event.emoji == self.runnerReaction:
+                    print('remove run')
                     await user.remove_roles(self.peeporunners)
 
 
