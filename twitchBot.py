@@ -25,3 +25,4 @@ class RaphTwitch(commands.Bot):
     async def social_message(self, ctx):
         await ctx.send('Twitter: https://twitter.com/dreadedrta')
         await ctx.send('Discord: https://discord.gg/X2fsxAM')
+

@@ -7,8 +7,12 @@ class TwitchBot(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        twitch = twitchBot.RaphTwitch()
-        twitch.loop.create_task(twitch.start())
+        self.twitch = twitchBot.RaphTwitch()
+        self.twitch.loop.create_task(self.twitch.start())
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.twitch.modify_webhook_subscription()
 
 
 def setup(bot):
