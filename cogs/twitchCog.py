@@ -10,10 +10,6 @@ class TwitchBot(commands.Cog):
         self.twitch = twitchBot.RaphTwitch()
         self.twitch.loop.create_task(self.twitch.start())
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.twitch.modify_webhook_subscription()
-
 
 def setup(bot):
     bot.add_cog(TwitchBot(bot))
