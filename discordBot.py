@@ -10,7 +10,7 @@ class Raph(commands.Bot):
         self.guild = None
 
     async def on_ready(self):
-        self.guild = settings.setGuild(self)
+        self.guild = settings.setguild(self)
         print(f'Logged into Discord | {self.guild.name}')
 
 

@@ -1,18 +1,36 @@
 <component name="ProjectDictionaryState">
   <dictionary name="dreaded_">
     <words>
+      <w>addreaction</w>
+      <w>chanid</w>
       <w>channame</w>
+      <w>delreaction</w>
       <w>emotename</w>
+      <w>getreaction</w>
+      <w>getrole</w>
       <w>levelno</w>
       <w>memers</w>
+      <w>messagecontent</w>
+      <w>messageid</w>
       <w>notif</w>
       <w>peepo</w>
       <w>peeporunners</w>
       <w>pingme</w>
       <w>pubsub</w>
       <w>raph</w>
+      <w>roleassign</w>
+      <w>roleid</w>
       <w>rolename</w>
+      <w>setchan</w>
+      <w>setemote</w>
+      <w>setguild</w>
+      <w>setreaction</w>
+      <w>setrole</w>
       <w>speedrunner</w>
+      <w>tobeimplemented</w>
+      <w>toberemoved</w>
+      <w>todelete</w>
+      <w>tosend</w>
       <w>webhook</w>
     </words>
   </dictionary>

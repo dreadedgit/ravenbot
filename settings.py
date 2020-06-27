@@ -12,11 +12,7 @@ VERSION = os.getenv("VERSION")
 DISCORD_ID = os.getenv("DISCORD_ID")
 SERVER_ID = os.getenv("SERVER_ID")
 DEFAULT_ROLE = os.getenv("DEFAULT_ROLE")
-SPEEDRUNNER_ROLE = os.getenv("SPEEDRUNNER_ROLE")
-LIVE_NOTIF_ROLE = os.getenv("LIVE_NOTIF_ROLE")
 ROLE_ASSIGN_CHANNEL = os.getenv("ROLE_ASSIGN_CHANNEL")
-SPEEDRUNNER_EMOTE = os.getenv("SPEEDRUNNER_EMOTE")
-LIVE_NOTIF_EMOTE = os.getenv("LIVE_NOTIF_EMOTE")
 
 # TWITCH BOT
 IRC_TOKEN = os.getenv("IRC_TOKEN")
@@ -29,21 +25,21 @@ TOPICS = os.getenv("TOPICS").split(',')
 
 
 # DISCORD BOT HELPER FUNCTIONS
-def setGuild(bot):
+def setguild(bot):
     guild = utils.find(lambda g: str(g.id) == SERVER_ID, bot.guilds)
     return guild
 
 
-def setRole(guild, rolename):
+def setrole(guild, rolename):
     role = utils.find(lambda r: r.name == rolename, guild.roles)
     return role
 
 
-def setChan(guild, channame):
+def setchan(guild, channame):
     chan = utils.find(lambda c: c.name == channame, guild.channels)
     return chan
 
 
-def setEmote(guild, emotename):
+def setemote(guild, emotename):
     emote = utils.find(lambda e: e.name == emotename, guild.emojis)
     return emote

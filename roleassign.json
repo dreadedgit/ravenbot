@@ -1,0 +1,20 @@
+{
+  "message": [
+    {
+      "messagecontent": "React to this message for the listed roles",
+      "messageid": 726272481538605206
+    }
+  ],
+  "reactions": [
+    {
+      "roleid": 724641567301697980,
+      "emotename": "<:WeHateTwink:596910858387587072>",
+      "name": "ping me"
+    },
+    {
+      "roleid": 596915220220477441,
+      "emotename": "<a:peepoRun:666846037591457833>",
+      "name": "peeporunners"
+    }
+  ]
+}
