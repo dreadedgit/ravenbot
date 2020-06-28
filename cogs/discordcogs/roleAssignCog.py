@@ -1,8 +1,7 @@
-import discord
 import json
 
-from discord.ext import commands
 from discord import utils
+from discord.ext import commands
 
 import settings
 
@@ -17,7 +16,7 @@ class RoleCog(commands.Cog):
 
         self.data = None
 
-        with open('roleassign.json') as json_file:
+        with open('json/roleassign.json') as json_file:
             self.data = json.load(json_file)
         json_file.close()
 
@@ -30,7 +29,7 @@ class RoleCog(commands.Cog):
     def setreaction(self, emote, role):
         reaction = {"roleid": settings.setrole(self.guild, role).id, "emotename": emote, "name": role}
         self.data['reactions'].append(reaction)
-        with open('roleassign.json', 'w') as outfile:
+        with open('json/roleassign.json', 'w') as outfile:
             json.dump(self.data, outfile)
 
     def is_reaction(self, term):
@@ -52,7 +51,7 @@ class RoleCog(commands.Cog):
                     self.data['reactions'].remove(re)
             elif re["emotename"] == term:
                 self.data['reactions'].remove(re)
-        with open('roleassign.json', 'w') as outfile:
+        with open('json/roleassign.json', 'w') as outfile:
             json.dump(self.data, outfile)
 
     def getrole(self, e):

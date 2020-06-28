@@ -4,7 +4,9 @@
       <w>addreaction</w>
       <w>chanid</w>
       <w>channame</w>
+      <w>channelname</w>
       <w>delreaction</w>
+      <w>emotechannel</w>
       <w>emotename</w>
       <w>getreaction</w>
       <w>getrole</w>

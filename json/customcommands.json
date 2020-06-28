@@ -1,0 +1,12 @@
+{
+  "commands": [
+    {
+      "name": "twitter",
+      "response": "Twitter: https://twitter.com/dreadedrta"
+    },
+    {
+      "name": "discord",
+      "response": "Discord: https://discord.gg/X2fsxAM"
+    }
+  ]
+}

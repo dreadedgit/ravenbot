@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
+
 from discord import utils
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -13,6 +14,7 @@ DISCORD_ID = os.getenv("DISCORD_ID")
 SERVER_ID = os.getenv("SERVER_ID")
 DEFAULT_ROLE = os.getenv("DEFAULT_ROLE")
 ROLE_ASSIGN_CHANNEL = os.getenv("ROLE_ASSIGN_CHANNEL")
+MEMES_CHANNEL = os.getenv("MEMES_CHANNEL")
 
 # TWITCH BOT
 IRC_TOKEN = os.getenv("IRC_TOKEN")
