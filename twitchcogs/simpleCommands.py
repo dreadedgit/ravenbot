@@ -80,3 +80,5 @@ class SimpleCog:
 
     async def event_error(self, error, data):
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+
+

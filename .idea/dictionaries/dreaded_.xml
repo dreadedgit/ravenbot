@@ -1,15 +1,23 @@
 <component name="ProjectDictionaryState">
   <dictionary name="dreaded_">
     <words>
+      <w>addcom</w>
+      <w>addcommand</w>
       <w>addreaction</w>
+      <w>asctime</w>
       <w>chanid</w>
       <w>channame</w>
       <w>channelname</w>
+      <w>customcommands</w>
+      <w>delcom</w>
+      <w>deletecom</w>
       <w>delreaction</w>
+      <w>discordcogs</w>
       <w>emotechannel</w>
       <w>emotename</w>
       <w>getreaction</w>
       <w>getrole</w>
+      <w>levelname</w>
       <w>levelno</w>
       <w>memers</w>
       <w>messagecontent</w>
@@ -33,6 +41,7 @@
       <w>toberemoved</w>
       <w>todelete</w>
       <w>tosend</w>
+      <w>twitchcogs</w>
       <w>webhook</w>
     </words>
   </dictionary>

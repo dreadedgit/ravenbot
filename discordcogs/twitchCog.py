@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-import twitchBot
+from bots import twitchBot
 
 
 class TwitchBot(commands.Cog):
@@ -8,7 +8,7 @@ class TwitchBot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.twitch = twitchBot.RaphTwitch()
-        self.twitch.load_module('cogs.twitchcogs.simpleCommands')
+        self.twitch.load_module('twitchcogs.simpleCommands')
         self.twitch.loop.create_task(self.twitch.start())
 
 

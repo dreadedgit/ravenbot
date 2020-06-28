@@ -3,7 +3,7 @@ import json
 from discord import utils
 from discord.ext import commands
 
-import settings
+from globals import settings
 
 
 class RoleCog(commands.Cog):

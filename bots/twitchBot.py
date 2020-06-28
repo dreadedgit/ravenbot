@@ -2,7 +2,7 @@ from abc import ABC
 
 from twitchio.ext import commands
 
-import settings
+from globals import settings
 
 
 class RaphTwitch(commands.Bot, ABC):
