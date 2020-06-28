@@ -7,6 +7,10 @@
     {
       "name": "discord",
       "response": "Discord: https://discord.gg/X2fsxAM"
+    },
+    {
+      "name": "reset",
+      "response": "oh no you accidentally hit the reset button"
     }
   ]
 }
