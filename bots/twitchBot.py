@@ -19,6 +19,7 @@ class RaphTwitch(commands.Bot, ABC):
 
     async def event_ready(self):
         print(f'Logged into Twitch | {self.nick}')
+        await self.get_channel(settings.CHANNEL).colour('CadetBlue')
 
     async def event_message(self, message):
-        pass
+        print(f'[TWITCH CHAT]{message.author.name}: {message.content}')

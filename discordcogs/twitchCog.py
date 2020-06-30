@@ -9,6 +9,7 @@ class TwitchBot(commands.Cog):
         self.bot = bot
         self.twitch = twitchBot.RaphTwitch()
         self.twitch.load_module('twitchcogs.simpleCommands')
+        self.twitch.load_module('twitchcogs.timers')
         self.twitch.loop.create_task(self.twitch.start())
 
 

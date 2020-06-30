@@ -38,6 +38,7 @@ class SimpleCog:
                 break
 
     def getresponse(self, name):
+        response = ''
         for com in self.data['commands']:
             if name == com["name"]:
                 response = com["response"]
@@ -47,6 +48,7 @@ class SimpleCog:
     @commands.command(name='addcom',
                       aliases='addcommand')
     async def _add_command(self, ctx, name, *response):
+        re = ''
         if not ctx.author.is_mod:
             re = f'@{ctx.author.name} only mods can add commands'
         elif ctx.author.is_mod:
@@ -61,6 +63,7 @@ class SimpleCog:
     @commands.command(name='delcom',
                       aliases='deletecom')
     async def _del_command(self, ctx, name):
+        re = ''
         if not ctx.author.is_mod:
             re = f'@{ctx.author.name} only mods can delete commands'
         elif ctx.author.is_mod:
@@ -72,13 +75,13 @@ class SimpleCog:
         await ctx.send(content=re)
 
     async def event_message(self, message):
-        if message.content.startswith('!'):
-            if self.is_command(message.content.strip('!')):
-                await message.channel.send(content=self.getresponse(message.content.strip('!')))
-            else:
-                await self.bot.handle_commands(message)
+        if not message.author.name == self.bot.nick:
+            if message.content.startswith('!'):
+                if self.is_command(message.content.strip('!')):
+                    await message.channel.send(content=self.getresponse(message.content.strip('!')))
+                else:
+                    await self.bot.handle_commands(message)
 
     async def event_error(self, error, data):
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
-
 

@@ -13,6 +13,7 @@
       <w>deletecom</w>
       <w>delreaction</w>
       <w>discordcogs</w>
+      <w>doesn</w>
       <w>emotechannel</w>
       <w>emotename</w>
       <w>getreaction</w>
@@ -37,6 +38,8 @@
       <w>setreaction</w>
       <w>setrole</w>
       <w>speedrunner</w>
+      <w>timermessages</w>
+      <w>timertask</w>
       <w>tobeimplemented</w>
       <w>toberemoved</w>
       <w>todelete</w>
