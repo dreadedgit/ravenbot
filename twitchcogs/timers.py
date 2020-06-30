@@ -29,7 +29,7 @@ class TimerCog:
         if not message.author.name == self.bot.nick:
             if not message.content.startswith('!'):
                 self.m += 1
-                if self.m == 5:
+                if self.m == 10:
                     await asyncio.sleep(30)
                     await self.timer_message(message)
                     self.previous = self.tosend
