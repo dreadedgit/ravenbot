@@ -8,6 +8,7 @@
       <w>chanid</w>
       <w>channame</w>
       <w>channelname</w>
+      <w>cooldown</w>
       <w>customcommands</w>
       <w>delcom</w>
       <w>deletecom</w>

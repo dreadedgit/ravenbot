@@ -13,6 +13,7 @@ class TimerCog:
         self.previous = ''
         self.bot = bot
         self.m = 0
+
         with open('json/timermessages.json') as json_file:
             self.data = json.load(json_file)
         json_file.close()

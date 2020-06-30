@@ -1,3 +1,4 @@
+import asyncio
 import json
 import sys
 import traceback
@@ -10,6 +11,7 @@ class SimpleCog:
 
     def __init__(self, bot):
         self.bot = bot
+        self.cooldown = 0
 
         with open('json/customcommands.json') as json_file:
             self.data = json.load(json_file)
@@ -77,11 +79,15 @@ class SimpleCog:
     async def event_message(self, message):
         if not message.author.name == self.bot.nick:
             if message.content.startswith('!'):
-                if self.is_command(message.content.strip('!')):
+                if self.cooldown == 1:
+                    await asyncio.sleep(5)
+                    self.cooldown = 0
+                elif self.is_command(message.content.strip('!')) & self.cooldown == 0:
                     await message.channel.send(content=self.getresponse(message.content.strip('!')))
+                    self.cooldown = 1
                 else:
                     await self.bot.handle_commands(message)
 
-    async def event_error(self, error, data):
+    async def event_error(self, error):
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 

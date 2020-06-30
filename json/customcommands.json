@@ -1,1 +1,20 @@
-{"commands": [{"name": "twitter", "response": "Twitter: https://twitter.com/dreadedrta"}, {"name": "discord", "response": "Discord: https://discord.gg/X2fsxAM"}, {"name": "reset", "response": "oh no you accidentally hit the reset button"}, {"name": "speedrunning", "response": "https://clips.twitch.tv/TangentialPeacefulBatChefFrank"}]}
+{
+  "commands": [
+    {
+      "name": "twitter",
+      "response": "Twitter: https://twitter.com/dreadedrta"
+    },
+    {
+      "name": "discord",
+      "response": "Discord: https://discord.gg/X2fsxAM"
+    },
+    {
+      "name": "reset",
+      "response": "oh no you accidentally hit the reset button"
+    },
+    {
+      "name": "speedrunning",
+      "response": "https://clips.twitch.tv/TangentialPeacefulBatChefFrank"
+    }
+  ]
+}
