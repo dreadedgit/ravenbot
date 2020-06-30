@@ -1,5 +1,5 @@
-import json
 from random import randint
+from globals.jsonFunctions import open_file
 import asyncio
 
 from twitchio.ext import commands
@@ -13,10 +13,7 @@ class TimerCog:
         self.previous = ''
         self.bot = bot
         self.m = 0
-
-        with open('json/timermessages.json') as json_file:
-            self.data = json.load(json_file)
-        json_file.close()
+        self.data = open_file('timermessages')
 
     async def timer_message(self, message):
         while self.tosend == self.previous:

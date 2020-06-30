@@ -1,5 +1,5 @@
 import asyncio
-import json
+from globals.jsonFunctions import open_file, write_file
 import sys
 import traceback
 
@@ -13,9 +13,7 @@ class SimpleCog:
         self.bot = bot
         self.cooldown = 0
 
-        with open('json/customcommands.json') as json_file:
-            self.data = json.load(json_file)
-        json_file.close()
+        self.data = open_file('customcommands')
 
     def is_command(self, name):
         result = False
@@ -28,15 +26,13 @@ class SimpleCog:
     def addcom(self, name, response):
         com = {"name": name, "response": response}
         self.data['commands'].append(com)
-        with open('json/customcommands.json', 'w') as outfile:
-            json.dump(self.data, outfile)
+        write_file(self.data, 'customcommands')
 
     def delcom(self, name):
         for com in self.data['commands']:
             if name == com["name"]:
                 self.data['commands'].remove(com)
-                with open('json/customcommands.json', 'w') as outfile:
-                    json.dump(self.data, outfile)
+                write_file(self.data, 'customcommands')
                 break
 
     def getresponse(self, name):
