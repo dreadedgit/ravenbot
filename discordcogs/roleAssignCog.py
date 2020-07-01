@@ -1,9 +1,11 @@
-import json
+import sys
+import traceback
 
 from discord import utils
 from discord.ext import commands
 
-from globals import settings
+from globals import helpers
+from globals.settings import ROLE_ASSIGN_CHANNEL
 
 
 class RoleCog(commands.Cog):
@@ -13,30 +15,30 @@ class RoleCog(commands.Cog):
         self.guild = None
         self.default = None
         self.roleAssignChannel = None
+        self.logger = helpers.setup_logger(__name__)
 
-        self.data = None
-
-        with open('json/roleassign.json') as json_file:
-            self.data = json.load(json_file)
-        json_file.close()
+        self.data = helpers.open_file('roleassign')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.guild = settings.setguild(self.bot)
-        self.default = settings.setrole(self.guild, settings.DEFAULT_ROLE)
-        self.roleAssignChannel = settings.setchan(self.guild, settings.ROLE_ASSIGN_CHANNEL)
+        self.guild = helpers.get_guild(self.bot)
+        self.default = helpers.get_default_role(self.guild)
+        self.roleAssignChannel = helpers.get_chan(self.guild, ROLE_ASSIGN_CHANNEL)
 
     def setreaction(self, emote, role):
-        reaction = {"roleid": settings.setrole(self.guild, role).id, "emotename": emote, "name": role}
+        reaction = {
+            "roleid": helpers.get_role(self.guild, role).id,
+            "emotename": emote,
+            "name": role
+        }
         self.data['reactions'].append(reaction)
-        with open('json/roleassign.json', 'w') as outfile:
-            json.dump(self.data, outfile)
+        helpers.write_file('roleassign')
 
     def is_reaction(self, term):
         result = False
         for re in self.data['reactions']:
-            if settings.setrole(self.guild, term) is not None:
-                if re["roleid"] == settings.setrole(self.guild, term).id:
+            if helpers.get_role(self.guild, term) is not None:
+                if re["roleid"] == helpers.get_role(self.guild, term).id:
                     result = True
                     break
             elif re["emotename"] == str(term):
@@ -46,13 +48,12 @@ class RoleCog(commands.Cog):
 
     def remove_reaction(self, term):
         for re in self.data['reactions']:
-            if settings.setrole(self.guild, term) is not None:
-                if re["roleid"] == settings.setrole(self.guild, term).id:
+            if helpers.get_role(self.guild, term) is not None:
+                if re["roleid"] == helpers.get_role(self.guild, term).id:
                     self.data['reactions'].remove(re)
             elif re["emotename"] == term:
                 self.data['reactions'].remove(re)
-        with open('json/roleassign.json', 'w') as outfile:
-            json.dump(self.data, outfile)
+        helpers.write_file('roleassign')
 
     def getrole(self, e):
         r = ''
@@ -61,7 +62,7 @@ class RoleCog(commands.Cog):
                 r = re["name"]
                 break
 
-        return settings.setrole(self.guild, r)
+        return helpers.get_role(self.guild, r)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -84,8 +85,8 @@ class RoleCog(commands.Cog):
         user = utils.find(lambda u: u.id == event.user_id, self.guild.members)
         if event.guild_id == self.guild.id:
             if event.channel_id == self.roleAssignChannel.id:
-                if self.is_reaction(str(settings.setemote(self.guild, event.emoji.name))):
-                    await user.remove_roles(self.getrole(str(settings.setemote(self.guild, event.emoji.name))))
+                if self.is_reaction(str(helpers.get_emote(self.guild, event.emoji.name))):
+                    await user.remove_roles(self.getrole(str(helpers.get_emote(self.guild, event.emoji.name))))
 
     @commands.command(name="addreaction",
                       pass_context=True,
@@ -102,8 +103,12 @@ class RoleCog(commands.Cog):
         await ctx.message.delete()
 
     @_add_reaction.error
-    async def add_error(self, error, ctx):
-        print(error)
+    async def add_error(self, error):
+        if isinstance(error, commands.CommandNotFound):
+            pass
+        else:
+            self.logger.error(f"{error}")
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
     @commands.command(name="delreaction",
                       pass_context=True,
@@ -119,7 +124,11 @@ class RoleCog(commands.Cog):
 
     @_del_reaction.error
     async def del_error(self, error, ctx):
-        print(error)
+        if isinstance(error, commands.CommandNotFound):
+            pass
+        else:
+            self.logger.error(f"{error}")
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
     @commands.command(name="message",
                       pass_context=True,
@@ -129,8 +138,7 @@ class RoleCog(commands.Cog):
         if self.data["message"][0]["messageid"] == 0:
             message = await ctx.send("working")
             self.data["message"][0]["messageid"] = message.id
-            with open('roleassign.json', 'w') as outfile:
-                json.dump(self.data, outfile)
+            helpers.write_file('roleassign')
         message = await self.roleAssignChannel.fetch_message(self.data["message"][0]["messageid"])
         content = []
         for re in self.data["reactions"]:

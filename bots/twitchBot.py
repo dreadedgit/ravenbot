@@ -2,6 +2,7 @@ from abc import ABC
 
 from twitchio.ext import commands
 
+from globals import helpers
 from globals import settings
 
 
@@ -16,10 +17,11 @@ class RaphTwitch(commands.Bot, ABC):
             nick=settings.NICK,
             initial_channels=[settings.CHANNEL]
         )
+        self.logger = helpers.setup_logger(__name__)
 
     async def event_ready(self):
-        print(f'Logged into Twitch | {self.nick}')
+        self.logger.info(f'Logged into Twitch | {self.nick}')
         await self.get_channel(settings.CHANNEL).colour('CadetBlue')
 
     async def event_message(self, message):
-        print(f'[TWITCH CHAT]{message.author.name}: {message.content}')
+        self.logger.log(5, f'{message.author.name}: {message.content}')

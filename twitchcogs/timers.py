@@ -1,5 +1,5 @@
 from random import randint
-from globals.jsonFunctions import open_file
+from globals import helpers
 import asyncio
 
 from twitchio.ext import commands
@@ -13,7 +13,7 @@ class TimerCog:
         self.previous = ''
         self.bot = bot
         self.m = 0
-        self.data = open_file('timermessages')
+        self.data = helpers.open_file('timermessages')
 
     async def timer_message(self, message):
         while self.tosend == self.previous:

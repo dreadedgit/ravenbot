@@ -1,5 +1,5 @@
 import asyncio
-from globals.jsonFunctions import open_file, write_file
+from globals import helpers
 import sys
 import traceback
 
@@ -12,8 +12,8 @@ class SimpleCog:
     def __init__(self, bot):
         self.bot = bot
         self.cooldown = 0
-
-        self.data = open_file('customcommands')
+        self.logger = helpers.setup_logger(__name__)
+        self.data = helpers.open_file('customcommands')
 
     def is_command(self, name):
         result = False
@@ -26,13 +26,13 @@ class SimpleCog:
     def addcom(self, name, response):
         com = {"name": name, "response": response}
         self.data['commands'].append(com)
-        write_file(self.data, 'customcommands')
+        helpers.write_file(self.data, 'customcommands')
 
     def delcom(self, name):
         for com in self.data['commands']:
             if name == com["name"]:
                 self.data['commands'].remove(com)
-                write_file(self.data, 'customcommands')
+                helpers.write_file(self.data, 'customcommands')
                 break
 
     def getresponse(self, name):
@@ -84,6 +84,10 @@ class SimpleCog:
                 else:
                     await self.bot.handle_commands(message)
 
-    async def event_error(self, error):
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+    async def event_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandNotFound):
+            pass
+        else:
+            self.logger.error(f"[{ctx.channel.name}] {error}")
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 

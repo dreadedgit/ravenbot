@@ -1,6 +1,7 @@
 from bots import discordBot
 from globals import settings
 
+
 r = discordBot.Raph(settings.COMMAND_PREFIX, settings.VERSION)
 
 r.load_extension('discordcogs.twitchCog')

@@ -5,6 +5,7 @@
       <w>addcommand</w>
       <w>addreaction</w>
       <w>asctime</w>
+      <w>byid</w>
       <w>chanid</w>
       <w>channame</w>
       <w>channelname</w>
@@ -17,6 +18,7 @@
       <w>doesn</w>
       <w>emotechannel</w>
       <w>emotename</w>
+      <w>getguild</w>
       <w>getreaction</w>
       <w>getrole</w>
       <w>levelname</w>

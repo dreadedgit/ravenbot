@@ -1,6 +1,5 @@
 import os
 
-from discord import utils
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,24 +23,3 @@ TWITCH_SECRET = os.getenv("TWITCH_SECRET")
 NICK = os.getenv("NICK")
 CHANNEL = os.getenv("CHANNEL")
 TOPICS = os.getenv("TOPICS").split(',')
-
-
-# DISCORD BOT HELPER FUNCTIONS
-def setguild(bot):
-    guild = utils.find(lambda g: str(g.id) == SERVER_ID, bot.guilds)
-    return guild
-
-
-def setrole(guild, rolename):
-    role = utils.find(lambda r: r.name == rolename, guild.roles)
-    return role
-
-
-def setchan(guild, channame):
-    chan = utils.find(lambda c: c.name == channame, guild.channels)
-    return chan
-
-
-def setemote(guild, emotename):
-    emote = utils.find(lambda e: e.name == emotename, guild.emojis)
-    return emote
