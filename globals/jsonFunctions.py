@@ -4,6 +4,7 @@ import json
 def open_file(file):
     with open('json/' + file + '.json') as json_file:
         data = json.load(json_file)
+        print(data)
     json_file.close()
     return data
 
