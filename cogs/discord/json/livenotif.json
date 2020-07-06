@@ -1,0 +1,10 @@
+{
+  "CHANNEL": {
+    "NAME": "twitch-pings",
+    "ID": 0
+  },
+  "ROLE": {
+    "NAME": "ping me",
+    "ID": 724641567301697980
+  }
+}

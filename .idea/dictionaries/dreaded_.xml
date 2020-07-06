@@ -2,53 +2,25 @@
   <dictionary name="dreaded_">
     <words>
       <w>addcom</w>
-      <w>addcommand</w>
-      <w>addreaction</w>
       <w>asctime</w>
-      <w>byid</w>
-      <w>chanid</w>
-      <w>channame</w>
-      <w>channelname</w>
+      <w>asyncio</w>
+      <w>botsettings</w>
       <w>cooldown</w>
       <w>customcommands</w>
       <w>delcom</w>
-      <w>deletecom</w>
-      <w>delreaction</w>
-      <w>discordcogs</w>
-      <w>doesn</w>
-      <w>emotechannel</w>
-      <w>emotename</w>
-      <w>getguild</w>
-      <w>getreaction</w>
       <w>getrole</w>
       <w>levelname</w>
       <w>levelno</w>
-      <w>memers</w>
-      <w>messagecontent</w>
-      <w>messageid</w>
+      <w>livenotif</w>
       <w>notif</w>
-      <w>peepo</w>
-      <w>peeporunners</w>
-      <w>pingme</w>
-      <w>pubsub</w>
       <w>raph</w>
+      <w>ravenbot</w>
       <w>roleassign</w>
       <w>roleid</w>
-      <w>rolename</w>
-      <w>setchan</w>
-      <w>setemote</w>
-      <w>setguild</w>
-      <w>setreaction</w>
-      <w>setrole</w>
-      <w>speedrunner</w>
-      <w>timermessages</w>
-      <w>timertask</w>
-      <w>tobeimplemented</w>
-      <w>toberemoved</w>
-      <w>todelete</w>
       <w>tosend</w>
-      <w>twitchcogs</w>
-      <w>webhook</w>
+      <w>twitchcog</w>
+      <w>twitchio</w>
+      <w>websockets</w>
     </words>
   </dictionary>
 </component>

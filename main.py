@@ -1,11 +1,11 @@
-from bots import discordBot
-from globals import settings
+from bots import discordbot
+from settings import helpers
 
+raph = discordbot.Ravenbot()
 
-r = discordBot.Raph(settings.COMMAND_PREFIX, settings.VERSION)
+cogs = ['cogs.discord.twitchcog', 'cogs.discord.roleassign']
 
-r.load_extension('discordcogs.twitchCog')
-# r.load_extension('discordcogs.goofCog')
-r.load_extension('discordcogs.roleAssignCog')
+for c in cogs:
+    raph.load_extension(c)
 
-r.run(settings.DISCORD_ID)
+raph.run(helpers.get_discord("CLIENT ID"))
