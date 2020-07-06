@@ -15,14 +15,20 @@ def getrole(bot, e):
     for r in data["ROLES"]:
         if r["EMOTE"] == e:
             id = r["ID"]
+            break
 
     return helpers.get_role(bot, id)
 
 
-def is_allowed(bot, e):
+def is_allowed(e):
     allowed = False
-    if getrole(bot, e) is not None:
-        allowed = True
+    for r in data["ROLES"]:
+        if r["EMOTE"] != "None":
+            if r["EMOTE"] == e:
+                allowed = True
+                break
+            else:
+                allowed = False
     return allowed
 
 
@@ -48,19 +54,19 @@ class RoleCog(commands.Cog):
     async def on_raw_reaction_add(self, event):
         if event.guild_id == helpers.get_guild(self.bot).id:
             if event.channel_id == self.channel.id:
-                if not is_allowed(self.bot, str(helpers.get_emote(self.bot, event.emoji.name))):
-                    await event.member.add_roles(getrole(self.bot, str(event.emoji)))
-                else:
+                if not is_allowed(str(helpers.get_emote(self.bot, event.emoji.name))):
                     message = await self.channel.fetch_message(event.message_id)
                     reaction = utils.find(lambda r: r.emoji == event.emoji, message.reactions)
                     await reaction.remove(event.member)
+                elif is_allowed(str(helpers.get_emote(self.bot, event.emoji.name))):
+                    await event.member.add_roles(getrole(self.bot, str(helpers.get_emote(self.bot, event.emoji.name))))
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, event):
         user = utils.find(lambda u: u.id == event.user_id, helpers.get_guild(self.bot).members)
         if event.guild_id == helpers.get_guild(self.bot).id:
             if event.channel_id == self.channel.id:
-                if is_allowed(self.bot, str(helpers.get_emote(self.bot, event.emoji.name))):
+                if is_allowed(str(helpers.get_emote(self.bot, event.emoji.name))):
                     await user.remove_roles(getrole(self.bot, str(helpers.get_emote(self.bot, event.emoji.name))))
 
     async def message_create(self):

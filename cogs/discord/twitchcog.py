@@ -35,7 +35,7 @@ class RavenbotTCog(commands.Cog):
             await asyncio.sleep(300)
             if not is_live:
                 stream = await self.twitch.get_stream(TWITCH_CHANNEL)
-                if data:
+                if stream:
                     is_live = True
                     print(stream)
                     await self.send_live_message(stream)
