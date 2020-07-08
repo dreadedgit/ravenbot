@@ -49,9 +49,8 @@ class RavenbotTCog(commands.Cog):
                     is_live = False
 
     async def send_live_message(self, stream):
-        tosend = f'{self.role.mention} {stream["user_name"]} is now live'
         link = f'https://www.twitch.tv/{stream["user_name"]}'
-        await self.channel.send(tosend + " " + link)
+        await self.channel.send(f'{self.role.mention} {link}')
 
 
 def setup(bot):
