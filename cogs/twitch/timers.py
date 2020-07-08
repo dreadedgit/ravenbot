@@ -36,3 +36,7 @@ class TimerCog:
                     self.previous = self.tosend
             else:
                 pass
+
+
+def setup(bot):
+    bot.add_cog(TimerCog(bot))

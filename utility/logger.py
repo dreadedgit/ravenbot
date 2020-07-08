@@ -50,7 +50,7 @@ logging.getLogger("discord").setLevel(logging.ERROR)
 
 
 def setup_logger(logger):
-    formatter = logging.Formatter('[%(asctime)s][%(levelname)s][%(name)s]: %(message)s', '%d/%m/%Y %H:%M')
+    formatter = logging.Formatter('[%(asctime)s][%(levelname)s]: %(message)s', '%d/%m/%Y %H:%M')
     fh = logging.FileHandler('logs.log')
     sh = logging.StreamHandler()
     fh.setFormatter(formatter)

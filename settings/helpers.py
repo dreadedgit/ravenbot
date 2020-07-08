@@ -19,6 +19,7 @@ def open_file(file):
 def write_file(d, file):
     with open(file, 'w') as o:
         json.dump(d, o, indent=4)
+    o.close()
 
 
 data = open_file(BOTSETTINGS)

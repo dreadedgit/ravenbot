@@ -32,18 +32,21 @@ class RavenbotTCog(commands.Cog):
     async def check_if_live(self):
         is_live = False
         while True:
-            await asyncio.sleep(300)
-            if not is_live:
-                stream = await self.twitch.get_stream(TWITCH_CHANNEL)
-                if stream:
+            await asyncio.sleep(120)
+            stream = await self.twitch.get_stream(TWITCH_CHANNEL)
+            if is_live:
+                if stream is not None:
+                    print('is live')
                     is_live = True
-                    print(stream)
-                    await self.send_live_message(stream)
                 else:
                     is_live = False
-                    print('is not live')
             else:
-                print('is live')
+                if stream is not None:
+                    await self.send_live_message(stream)
+                    is_live = True
+                else:
+                    print('is not live')
+                    is_live = False
 
     async def send_live_message(self, stream):
         tosend = f'{self.role.mention} {stream["user_name"]} is now live'
