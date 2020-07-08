@@ -1,3 +1,5 @@
+import sys
+import traceback
 from abc import ABC
 
 from twitchio.ext import commands
@@ -25,3 +27,9 @@ class RavenbotT(commands.Bot, ABC):
 
     async def event_message(self, message):
         self.logger.log(5, f'{message.author.name}: {message.content}')
+
+    async def event_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandNotFound):
+            pass
+        else:
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)

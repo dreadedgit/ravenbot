@@ -1,6 +1,4 @@
 import asyncio
-import sys
-import traceback
 
 from twitchio.ext import commands
 
@@ -78,7 +76,7 @@ class CustomCommands:
         if message.author.name != self.bot.nick:
             if message.content.startswith('!'):
                 if self.cooldown:
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(3)
                     self.cooldown = False
                 else:
                     if is_command(message.content.strip('!')):
@@ -86,13 +84,6 @@ class CustomCommands:
                         self.cooldown = True
                     else:
                         await self.bot.handle_commands(message)
-
-    async def event_command_error(self, ctx, error):
-        if isinstance(error, commands.CommandNotFound):
-            pass
-        else:
-            self.logger.error(f"[{ctx.channel.name}] {error}")
-            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 
 def setup(bot):

@@ -24,7 +24,7 @@ class TimerCog:
             x -= 1
             self.tosend = data["MESSAGES"][x]
         self.m = 0
-        await message.channel.send(self.tosend)
+        await message.channel.send_me(self.tosend)
 
     async def event_message(self, message):
         if not message.author.name == self.bot.nick:

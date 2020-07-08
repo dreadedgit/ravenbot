@@ -10,6 +10,11 @@ data = helpers.open_file(filename)
 CHANNEL_NAME = data["CHANNEL"]["NAME"]
 ROLE_ID = data["ROLE"]["ID"]
 TWITCH_CHANNEL = helpers.get_twitch("CHANNELS")[0]
+modules = [
+    'cogs.twitch.customcommands',
+    'cogs.twitch.timers',
+    # 'cogs.twitch.basiccommands'
+]
 
 
 class RavenbotTCog(commands.Cog):
@@ -17,8 +22,8 @@ class RavenbotTCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.twitch = twitchbot.RavenbotT()
-        self.twitch.load_module('cogs.twitch.customcommands')
-        self.twitch.load_module('cogs.twitch.timers')
+        for m in modules:
+            self.twitch.load_module(m)
         self.twitch.loop.create_task(self.twitch.start())
         self.channel = None
         self.role = None

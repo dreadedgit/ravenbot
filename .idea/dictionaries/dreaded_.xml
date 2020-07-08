@@ -4,10 +4,12 @@
       <w>addcom</w>
       <w>asctime</w>
       <w>asyncio</w>
+      <w>basiccommands</w>
       <w>botsettings</w>
       <w>cooldown</w>
       <w>customcommands</w>
       <w>delcom</w>
+      <w>followage</w>
       <w>getrole</w>
       <w>levelname</w>
       <w>levelno</w>
