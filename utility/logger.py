@@ -43,11 +43,6 @@ On_Purple = "\033[45m"  # Purple
 On_Cyan = "\033[46m"  # Cyan
 On_White = "\033[47m"  # White
 
-logging.getLogger("twitchio").setLevel(logging.ERROR)
-logging.getLogger("asyncio").setLevel(logging.ERROR)
-logging.getLogger("websockets").setLevel(logging.ERROR)
-logging.getLogger("discord").setLevel(logging.ERROR)
-
 
 def setup_logger(logger):
     formatter = logging.Formatter('[%(asctime)s][%(levelname)s]: %(message)s', '%d/%m/%Y %H:%M')
@@ -83,5 +78,6 @@ def setup_logger(logger):
         return new
 
     sh.emit = decorate_emit(sh.emit)
+    fh.emit = decorate_emit(fh.emit)
     logger.addHandler(fh)
     logger.addHandler(sh)

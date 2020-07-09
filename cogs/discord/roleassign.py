@@ -7,7 +7,6 @@ filename = 'cogs/discord/json/roleassign.json'
 data = helpers.open_file(filename)
 CHANNEL_NAME = data["CHANNEL"]["NAME"]
 DEFAULT_ID = data["ROLES"][0]["ID"]
-logger = helpers.setup_logger(__name__)
 
 
 def getrole(bot, e):

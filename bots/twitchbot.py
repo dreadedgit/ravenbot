@@ -27,6 +27,7 @@ class RavenbotT(commands.Bot, ABC):
 
     async def event_message(self, message):
         self.logger.log(5, f'{message.author.name}: {message.content}')
+        await self.handle_commands(message)
 
     async def event_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):

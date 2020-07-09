@@ -83,7 +83,11 @@ class CustomCommands:
                         await message.channel.send(getresponse(message.content.strip('!')))
                         self.cooldown = True
                     else:
-                        await self.bot.handle_commands(message)
+                        pass
+            else:
+                pass
+        else:
+            pass
 
 
 def setup(bot):

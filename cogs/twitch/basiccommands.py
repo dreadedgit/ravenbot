@@ -29,12 +29,14 @@ class BasicCommands:
                 ctx.channel.name
             ]
         user_data = await self.bot.get_users(new[0], new[1])
-        follow = await self.bot.get_follow(user_data[0].id, user_data[1].id)
-        if follow is not None:
-            print(follow)
+        if len(user_data) == 1:
+            tosend = f'@{new[0]} you cannot follow yourself'
+        elif len(user_data) == 2:
+            follow = await self.bot.get_follow(user_data[0][0], user_data[1].id)
+            print(follow["followed_at"].split("T")[0])
+            # tosend = f'@{ctx.author.name}: {new[0]} has been following {new[1]} since {}'
         else:
-            # await ctx.send(f'{new[0]} is not following {new[1]}')
-            print('test')
+            print('error')
 
 
 def setup(bot):
