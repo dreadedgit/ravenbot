@@ -1,9 +1,6 @@
 import json
-import logging
 
 from discord import utils
-
-from utility import logger as _logger
 
 BOTSETTINGS = 'settings/json/botsettings.json'
 
@@ -23,13 +20,6 @@ def write_file(d, file):
 
 
 data = open_file(BOTSETTINGS)
-
-
-# LOGGER HELPER FUNCTION
-def setup_logger(name):
-    logger = logging.getLogger(name)
-    _logger.setup_logger(logger)
-    return logger
 
 
 # TWITCH HELPER FUNCTION

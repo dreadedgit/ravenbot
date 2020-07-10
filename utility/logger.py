@@ -44,13 +44,15 @@ On_Cyan = "\033[46m"  # Cyan
 On_White = "\033[47m"  # White
 
 
+def get_logger(name):
+    return logging.getLogger(name)
+
+
 def setup_logger(logger):
-    formatter = logging.Formatter('[%(asctime)s][%(levelname)s]: %(message)s', '%d/%m/%Y %H:%M')
+    formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s', '%d/%m/%Y %H:%M')
     fh = logging.FileHandler('logs.log')
     sh = logging.StreamHandler()
-    fh.setFormatter(formatter)
-    sh.setFormatter(formatter)
-    logger.setLevel(5)
+    logger.setLevel(logging.INFO)
 
     def decorate_emit(fn):
         def new(*args):
@@ -67,7 +69,7 @@ def setup_logger(logger):
                 colour = BGreen
             elif levelno >= 5:
                 colour = BBlue
-                args[0].levelname = "TWITCH CHAT"
+                args[0].levelname = "CHAT"
             else:
                 colour = Color_Off
             args[0].levelname = "{0}{1}\033[0;0m".format(colour, args[0].levelname)
@@ -78,6 +80,7 @@ def setup_logger(logger):
         return new
 
     sh.emit = decorate_emit(sh.emit)
-    fh.emit = decorate_emit(fh.emit)
+    fh.setFormatter(formatter)
+    sh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.addHandler(sh)

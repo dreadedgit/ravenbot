@@ -6,22 +6,32 @@
       <w>asyncio</w>
       <w>basiccommands</w>
       <w>botsettings</w>
+      <w>commandsfile</w>
+      <w>coms</w>
       <w>cooldown</w>
       <w>customcommands</w>
       <w>delcom</w>
       <w>followage</w>
+      <w>followdata</w>
+      <w>getfollow</w>
+      <w>getfollowage</w>
       <w>getrole</w>
+      <w>getusers</w>
       <w>levelname</w>
       <w>levelno</w>
+      <w>livefile</w>
       <w>livenotif</w>
       <w>notif</w>
       <w>raph</w>
       <w>ravenbot</w>
       <w>roleassign</w>
       <w>roleid</w>
+      <w>tcommands</w>
+      <w>timersfile</w>
       <w>tosend</w>
       <w>twitchcog</w>
       <w>twitchio</w>
+      <w>userdata</w>
       <w>websockets</w>
     </words>
   </dictionary>
