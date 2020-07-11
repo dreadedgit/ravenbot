@@ -168,6 +168,25 @@ CHANNEL_NAME = live["CHANNEL"]["NAME"]
 ROLE_ID = live["ROLE"]["ID"]
 
 
+async def twitch_message(message):
+    print(f'[CHAT]{message.author.name}: {message.content}')
+    if message.author.name != twitch.nick:
+        if message.content.startswith('!'):
+            if twitch.cooldown:
+                await asyncio.sleep(3)
+                twitch.cooldown = False
+            else:
+                if is_command(message.content.strip('!')):
+                    await message.channel.send(getresponse(message.content.strip('!')))
+                    twitch.cooldown = True
+        else:
+            twitch.count += 1
+            if twitch.count == 10:
+                await asyncio.sleep(60)
+                await timer_message(message)
+                twitch.previous = twitch.tosend
+
+
 class RavenbotTCog(commands.Cog):
 
     def __init__(self, bot):
@@ -175,29 +194,11 @@ class RavenbotTCog(commands.Cog):
         self.channel = None
         self.role = None
 
-    async def twitch_message(self, message):
-        print(f'[CHAT]{message.author.name}: {message.content}')
-        if message.author.name != twitch.nick:
-            if message.content.startswith('!'):
-                if twitch.cooldown:
-                    await asyncio.sleep(3)
-                    twitch.cooldown = False
-                else:
-                    if is_command(message.content.strip('!')):
-                        await message.channel.send(getresponse(message.content.strip('!')))
-                        twitch.cooldown = True
-            else:
-                twitch.count += 1
-                if twitch.count == 10:
-                    await asyncio.sleep(60)
-                    await timer_message(message)
-                    twitch.previous = twitch.tosend
-
     @commands.Cog.listener()
     async def on_ready(self):
-        twitch.add_listener(self.twitch_message, "event_message")
-        asyncio.get_event_loop().create_task(twitchpsub.start())
-        asyncio.get_event_loop().create_task(twitch.start())
+        twitch.add_listener(twitch_message, "event_message")
+        # asyncio.get_event_loop().create_task(twitchpsub.start())
+        await twitch.start()
         self.channel = get_channel(self.bot, CHANNEL_NAME)
         self.role = get_role(self.bot, ROLE_ID)
         await self.check_if_live()

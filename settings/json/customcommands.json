@@ -15,6 +15,10 @@
         {
             "NAME": "goinhome",
             "REPLY": "YEP GOIN HOME"
+        },
+        {
+            "NAME": "clap",
+            "REPLY": "YEP pepeClap"
         }
     ]
 }
