@@ -6,6 +6,7 @@
       <w>asyncio</w>
       <w>basiccommands</w>
       <w>botsettings</w>
+      <w>chanid</w>
       <w>commandsfile</w>
       <w>coms</w>
       <w>cooldown</w>
@@ -13,6 +14,7 @@
       <w>delcom</w>
       <w>followage</w>
       <w>followdata</w>
+      <w>formatters</w>
       <w>getfollow</w>
       <w>getfollowage</w>
       <w>getrole</w>
@@ -22,15 +24,19 @@
       <w>livefile</w>
       <w>livenotif</w>
       <w>notif</w>
+      <w>outformat</w>
+      <w>pubsub</w>
       <w>raph</w>
       <w>ravenbot</w>
       <w>roleassign</w>
       <w>roleid</w>
+      <w>settopics</w>
       <w>tcommands</w>
       <w>timersfile</w>
       <w>tosend</w>
       <w>twitchcog</w>
       <w>twitchio</w>
+      <w>twitchpsub</w>
       <w>userdata</w>
       <w>websockets</w>
     </words>

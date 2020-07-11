@@ -13,6 +13,14 @@
     "CHANNELS": [
       "dreaded_"
     ],
-    "COMMAND PREFIX": "!"
+    "COMMAND PREFIX": "!",
+    "OAUTH TOKEN": "oauth:ierrdsduwxzuymhmrz4n8q0ejm3oe7",
+    "API TOKEN": "ierrdsduwxzuymhmrz4n8q0ejm3oe7",
+    "API ID": "gp762nuuoqcoxypju8c569th9wz7q5",
+    "REFRESH TOKEN": "t6fd19upqsefv4wcr4zobm6wbeizefpod9bymxpheqwy6urask",
+    "TOPICS": [
+      "channel-points-channel-v1",
+      "channel-subscribe-events-v1"
+    ]
   }
 }

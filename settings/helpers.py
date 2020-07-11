@@ -1,5 +1,4 @@
 import json
-
 from discord import utils
 
 BOTSETTINGS = 'settings/json/botsettings.json'

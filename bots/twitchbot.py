@@ -3,7 +3,6 @@ from abc import ABC
 from twitchio.ext import commands
 
 from settings.helpers import get_twitch
-from utility import logger as logging
 
 
 class RavenbotT(commands.Bot, ABC):
@@ -17,15 +16,12 @@ class RavenbotT(commands.Bot, ABC):
             nick=get_twitch("NICKNAME"),
             initial_channels=get_twitch("CHANNELS")
         )
-        self.logger = None
         self.cooldown = False
         self.tosend = ''
         self.previous = ''
         self.count = 0
 
     async def event_ready(self):
-        self.logger = logging.get_logger(__name__)
-        logging.setup_logger(self.logger)
-        self.logger.info(f'Logged into Twitch | {self.nick}')
+        print(f'[INFO]Logged into Twitch | {self.nick}')
         for c in get_twitch("CHANNELS"):
             await self.get_channel(c).colour('CadetBlue')

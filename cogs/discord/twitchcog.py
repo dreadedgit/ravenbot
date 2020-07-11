@@ -1,4 +1,5 @@
 import asyncio
+from abc import ABC
 from random import randint
 
 from discord.ext import commands as commands
@@ -116,18 +117,51 @@ async def timer_message(message):
 
 
 # TWITCH BOT SETUP
-def is_cooldown():
-    return twitch.cooldown
-
-
 TWITCH_CHANNEL = get_twitch("CHANNELS")[0]
 twitch = twitchbot.RavenbotT()
 twitch.add_command(followage)
 twitch.add_command(addcom)
 twitch.add_command(delcom)
 
-# DISCORD INTEGRATION
 
+# # TWITCH PUBSUB SETUP
+# class TwitchPubSub(tcommands.Bot, ABC):
+#     def __init__(self):
+#         super().__init__(
+#             irc_token=get_twitch("OAUTH TOKEN"),
+#             api_token=get_twitch("API TOKEN"),
+#             client_id=get_twitch("API ID"),
+#             client_secret=get_twitch("CLIENT SECRET"),
+#             prefix=get_twitch("COMMAND PREFIX"),
+#             nick=TWITCH_CHANNEL,
+#             initial_channels=get_twitch("CHANNELS")
+#         )
+#         self.api_token = get_twitch("API TOKEN")
+#         self.channel_id = None
+#         self.ptopics = []
+#
+#     def settopics(self, chanid):
+#         for t in get_twitch("TOPICS"):
+#             self.ptopics.append(f'{t}.{chanid}')
+#         print(self.ptopics)
+#
+#     async def event_ready(self):
+#         self.channel_id = await self.get_users(TWITCH_CHANNEL)
+#         self.settopics(self.channel_id[0].id)
+#         ws = self._ws
+#         await ws..send("PING wss://pubsub-edge.twitch.tv")
+#         await self.pubsub_subscribe(get_twitch("API TOKEN"), *self.ptopics)
+#
+#     async def event_message(self, message):
+#         pass
+#
+#     async def event_raw_pubsub(self, data):
+#         print(data)
+#
+#
+# twitchpsub = TwitchPubSub()
+
+# DISCORD INTEGRATION
 livefile = 'cogs/discord/json/livenotif.json'
 live = open_file(livefile)
 CHANNEL_NAME = live["CHANNEL"]["NAME"]
@@ -142,9 +176,10 @@ class RavenbotTCog(commands.Cog):
         self.role = None
 
     async def twitch_message(self, message):
+        print(f'[CHAT]{message.author.name}: {message.content}')
         if message.author.name != twitch.nick:
             if message.content.startswith('!'):
-                if is_cooldown:
+                if twitch.cooldown:
                     await asyncio.sleep(3)
                     twitch.cooldown = False
                 else:
@@ -153,7 +188,6 @@ class RavenbotTCog(commands.Cog):
                         twitch.cooldown = True
             else:
                 twitch.count += 1
-                twitch.logger.log(5, f'{message.author.name}: {message.content}')
                 if twitch.count == 10:
                     await asyncio.sleep(60)
                     await timer_message(message)
@@ -162,7 +196,8 @@ class RavenbotTCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         twitch.add_listener(self.twitch_message, "event_message")
-        await twitch.start()
+        asyncio.get_event_loop().create_task(twitchpsub.start())
+        asyncio.get_event_loop().create_task(twitch.start())
         self.channel = get_channel(self.bot, CHANNEL_NAME)
         self.role = get_role(self.bot, ROLE_ID)
         await self.check_if_live()
@@ -178,6 +213,7 @@ class RavenbotTCog(commands.Cog):
                     is_live = False
             else:
                 if stream is not None:
+                    print(f'[INFO]Sending live message on discord')
                     await self.send_live_message(stream)
                     is_live = True
                 else:
