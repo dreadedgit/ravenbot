@@ -23,3 +23,11 @@ class Followage:
         user_data = await self.bot.get_users(ctx.author.name, ctx.channel.name)
         await self.get_follow(ctx, user_data)
 
+    def format_date(self, s):
+        date = '-'.split(s)
+        year = date[0]
+        month = date[1]
+        day = date[2]
+        formatted = f"{month}/{day}/{year}"
+        return formatted
+
