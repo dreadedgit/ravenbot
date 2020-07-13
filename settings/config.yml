@@ -1,0 +1,17 @@
+discord:
+  client_id: 'NjIxNTU2MTk4Mzc4MDQ1NDQw.Xu12iA.HUev_76lKecraQ-WZ4EAKbnmwWQ'
+  desc: 'Ravenbot v1.0.0'
+twitch:
+  api_client_id: 'gp762nuuoqcoxypju8c569th9wz7q5'
+  api_oauth_token: 'oauth:ierrdsduwxzuymhmrz4n8q0ejm3oe7'
+  api_token: 'ierrdsduwxzuymhmrz4n8q0ejm3oe7'
+  channels:
+  - 'dreaded_'
+  client_id: 'cbzep1yh1dako40wexa2d52dmoab1q'
+  client_secret: '14gfwvqskannklzddxit6aeii704jg'
+  irc_token: 'oauth:xqe6po2mxmj3s2o8pw9tv16zh5sx9y'
+  nick: 'ravenbot___'
+  pubsub_topics:
+  - 'channel-points-channel-v1'
+  - 'channel-subscribe-events-v1'
+  refresh_token: 't6fd19upqsefv4wcr4zobm6wbeizefpod9bymxpheqwy6urask'
