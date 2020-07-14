@@ -1,4 +1,3 @@
-import collections
 from concurrent import futures
 import logging
 
@@ -15,23 +14,11 @@ EXTENSIONS = {
     # 'streams'
 }
 
-DEFAULT_COMMAND_PREFIX = "!"
-
-
-async def get_prefix(bot, message):
-    if isinstance(message.channel, discord.DMChannel):
-        prefixes = [DEFAULT_COMMAND_PREFIX]
-    else:
-        prefixes = bot.prefixes[message.guild.id]
-        return commands.when_mentioned_or(*prefixes)(bot, message)
-
 
 class Bot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, command_prefix=get_prefix, **kwargs)
-        self.prefixes = collections.defaultdict(set)
-        self.admin_roles = collections.defaultdict(set)
+        super().__init__(*args, command_prefix="!", **kwargs)
         self.load_extensions()
 
     async def on_ready(self):

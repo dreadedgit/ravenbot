@@ -36,11 +36,8 @@ def log_request(route):
 
 
 def verify_payload(route):
-    """Decorator which verifies that a request was been sent from Twitch by comparing the 'X-Hub-Signature' header.
-    code from https://gist.github.com/SnowyLuma/a9fb1c2707dc005fe88b874297fee79f"""
-
     async def inner(server, request, *args, **kwargs):
-        secret = config['TWITCH_WEBHOOK_SECRET'].encode('utf-8')
+        secret = config["twitch"]["client_secret"].encode('utf-8')
         digest = hmac.new(secret, msg=request.body, digestmod=hashlib.sha256).hexdigest()
 
         if hmac.compare_digest(digest, request.headers.get('X-Hub-Signature', '')[7:]):
@@ -53,9 +50,6 @@ def verify_payload(route):
 
 
 def remove_duplicates(route):
-    """Decorator which prevents duplicate notifications being processed more than once.
-    code from: https://gist.github.com/SnowyLuma/a9fb1c2707dc005fe88b874297fee79f"""
-
     async def inner(server, request, *args, **kwargs):
         notification_id = request.headers.get('Twitch-Notification-ID')
 
@@ -90,10 +84,10 @@ class TwitchWebhookServer(base.APIClient):
         self._app = sanic.Sanic(error_handler=CustomErrorHandler(), configure_logging=False)
         self._app.add_route(self._handle_get, "<endpoint:[a-z/]+>", methods=['GET'])
         self._app.add_route(self._handle_post, "<endpoint:[a-z/]+>", methods=['POST'])
-        self._host = config.get('TWITCH_WEBHOOK_HOST') or socket.gethostbyname(socket.gethostname())
-        self._port = config['TWITCH_WEBHOOK_PORT']
+        self._host = parse.urlparse(TWITCH_API_URL).hostname or socket.gethostbyname(socket.gethostbyname())
+        self._port = parse.urlparse(TWITCH_API_URL).port or 80
+        self._external_host = None
         self._callback = callback
-        self._external_host = config.get('TWITCH_WEBHOOK_EXTERNAL_HOST')
         self._server = None
 
         # Store the 50 last notification ids to prevent duplicates
@@ -114,7 +108,7 @@ class TwitchWebhookServer(base.APIClient):
             'hub.mode': mode.name,
             'hub.topic': topic.as_uri,
             'hub.callback': f"{self._external_host}/{topic.endpoint}?{parse.urlencode(topic.params)}",
-            'hub.secret': config['TWITCH_WEBHOOK_SECRET']
+            'hub.secret': config['twitch']['client_secret']
         }
         if mode == WebhookMode.subscribe:
             data['hub.lease_seconds'] = duration
@@ -197,7 +191,7 @@ class TwitchWebhookServer(base.APIClient):
 
     async def start(self):
         try:
-            self._server = await self._app.create_server(host=self._host, port=self._port)
+            self._server = self._app.create_server(host=self._host, port=self._port)
             LOG.debug(f"Webhook server listening on {self._host}:{self._port}")
         except OSError:
             LOG.exception("Cannot start the webhook server")

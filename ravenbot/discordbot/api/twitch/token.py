@@ -3,7 +3,7 @@ import logging
 from urllib import parse
 
 from ...api import base
-from .... import config
+from ravenbot import config
 
 LOG = logging.getLogger(__name__)
 

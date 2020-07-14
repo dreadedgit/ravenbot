@@ -5,33 +5,36 @@ import collections
 from discord import errors
 from discord.ext import commands
 
+from ravenbot.cfg import Config
 from ... import api
 from ...api import twitch
 from ...check import is_admin
 from . import models
-from ravenbot.cfg import Config
+
+
+config = Config()
+filename = 'settings/discord/streams.yml'
+config.load(filename)
 
 LOG = logging.getLogger(__name__)
 
 DEFAULT_STREAMS_FILE = {
-    "streams": {
-        "user": {
-            "type": "",
-            "stream_id": 0,
-            "user_id": 0,
-            "game_id": 0,
-            "start_time": ""
+    'streams': {
+        'user': {
+            'type': '',
+            'stream_id': 0,
+            'user_id': 0,
+            'game_id': 0,
+            'start_time': ''
         }
     }
 }
-filename = "settings/discord/streams.yml"
-config = Config()
 
 
 class MissingStreamName(commands.MissingRequiredArgument):
 
     def __init__(self):
-        self.message = "At least one stream name is required"
+        self.message = 'At least one stream name is required'
 
 
 class Streams(commands.Cog):
@@ -39,7 +42,7 @@ class Streams(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.streams = config
-        if len(self.streams) == 0:
+        if len(self.streams['streams']) == 0:
             self.streams.update(DEFAULT_STREAMS_FILE)
             self.streams.write(filename, DEFAULT_STREAMS_FILE)
         self.client = twitch.TwitchAPIClient(self.bot.loop)
@@ -61,11 +64,11 @@ class Streams(commands.Cog):
 
         def task_done_callback(fut):
             if fut.cancelled():
-                LOG.debug(f"The task has been cancelled: {fut}")
+                LOG.debug(f'The task has been cancelled: {fut}')
                 return
             error = fut.exception()
             if error:
-                LOG.error(f"A task ended unexpectedly: {fut}", exc_info=(type(error), error, error.__traceback__))
+                LOG.error(f'A task ended unexpectedly: {fut}', exc_info=(type(error), error, error.__traceback__))
 
         for task in self.tasks:
             task.add_done_callback(task_done_callback)
@@ -73,8 +76,8 @@ class Streams(commands.Cog):
     async def on_webhook_event(self, topic, timestamp, body):
         """Method called when a webhook event is received"""
 
-        stream_data = body.get("data")
-        user_id = topic.params["user_id"]
+        stream_data = body.get('data')
+        user_id = topic.params['user_id']
 
         user_data = (await self.client.get_users(user_ids=[user_id]))[0]
 
@@ -82,37 +85,37 @@ class Streams(commands.Cog):
             stream_data = stream_data[0]
             active_streams_by_id = self._get_active_streams()
             for a in active_streams_by_id:
-                if a == stream_data["user_id"]:
+                if a == stream_data['user_id']:
                     pass
-            if stream_data["type"] != "live":
+            if stream_data['type'] != 'live':
                 pass
             else:
-                self._change_status(stream_data["user_id"])
+                self._change_status(stream_data['user_id'])
                 await self._on_stream_live(timestamp, user_data, stream_data)
         else:
             await self._on_stream_offline(user_data)
 
     async def update_subscriptions(self):
         """renew webhook subscriptions"""
-        LOG.debug("Subscriptions refresh task running...")
+        LOG.debug('Subscriptions refresh task running...')
         while True:
             try:
                 subscriptions = await self.webhook_server.list_subscriptions()
-                subscribed_users_by_id = {sub.topic.params["user_id"]: sub for sub in subscriptions}
+                subscribed_users_by_id = {sub.topic.params['user_id']: sub for sub in subscriptions}
 
                 missing_subscriptions = set()
                 outdated_subscriptions = set()
 
-                for u in self.streams["streams"]:
-                    if u["id"] not in subscribed_users_by_id:
-                        missing_subscriptions.add(twitch.StreamChanged(user_id=u["id"]))
-                    elif subscribed_users_by_id[u["id"]].expires_in < 3600:
-                        outdated_subscriptions.add(twitch.StreamChanged(user_id=u["id"]))
+                for u in self.streams['streams']:
+                    if self.streams['streams'][u]['user_id'] not in subscribed_users_by_id:
+                        missing_subscriptions.add(twitch.StreamChanged(user_id=self.streams['streams'][u]['user_id']))
+                    elif subscribed_users_by_id[self.streams['streams'][u]['user_id']].expires_in < 3600:
+                        outdated_subscriptions.add(twitch.StreamChanged(user_id=self.streams['streams'][u]['user_id']))
 
                 if missing_subscriptions:
-                    LOG.info(f"No subscription for topics: {missing_subscriptions}")
+                    LOG.info(f'No subscription for topics: {missing_subscriptions}')
                 if outdated_subscriptions:
-                    LOG.info(f"Outdated subscriptions for topics: {outdated_subscriptions}")
+                    LOG.info(f'Outdated subscriptions for topics: {outdated_subscriptions}')
 
                 await self.webhook_server.unsubscribe(*outdated_subscriptions)
                 await self.webhook_server.subscribe(*missing_subscriptions | outdated_subscriptions)
@@ -122,16 +125,15 @@ class Streams(commands.Cog):
 
     async def _on_stream_live(self, timestamp, user_data, stream_data):
         """call when stream info changes"""
-        game_id = stream_data["game_id"]
+        game_id = stream_data['game_id']
         game = (await self.client.get_games(game_id))[0]['name'] if game_id else game_id
         new_embed = models.NotificationEmbed(
-            login=user_data["login"],
-            display_name=user_data["display_name"],
+            login=user_data['login'],
+            display_name=user_data['display_name'],
             game=game,
-            title=stream_data["title"],
-            logo=user_data["profile_image_url"]
+            title=stream_data['title'],
+            logo=user_data['profile_image_url']
         )
-
 
     async def _on_stream_offline(self, user_data):
         """call when stream goes offline"""
@@ -139,24 +141,19 @@ class Streams(commands.Cog):
         active_streams = self._get_active_streams()
 
         for a in active_streams:
-            if user_data["id"] == a:
-                self._change_status(a)
+            if user_data['user_id'] == a:
+                self._change_status(user_data)
                 break
 
-    def _change_status(self, user):
-        for u in self.streams["streams"]:
-            if u["id"] == user:
-                if u["live"]:
-                    u["live"] = False
-                else:
-                    u["live"] = True
-                break
+    def _change_status(self, data):
+        user = self.streams['streams'][data['login']]
+        print(user)
         self.streams.write(filename, self.streams)
 
     def _get_active_streams(self):
         active_streams_by_id = []
-        for u in self.streams["streams"]:
-            if u["live"]:
-                active_streams_by_id.append(u["id"])
+        for u in self.streams['streams']:
+            if u['type']:
+                active_streams_by_id.append(u['user_id'])
 
         return active_streams_by_id
