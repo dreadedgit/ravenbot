@@ -70,6 +70,7 @@ def remove_duplicates(route):
 
     return inner
 
+
 class CustomErrorHandler(handlers.ErrorHandler):
 
     def default(self, request, exception):
@@ -216,7 +217,7 @@ class Subscription:
 
     def __repr__(self):
         return f"<{self.__class__.__name__} topic='{self.topic.as_uri}' expires_at='{self.expires_at}' " \
-            f"callback='{self.callback}'> "
+               f"callback='{self.callback}'> "
 
     @property
     def expires_in(self):
@@ -231,13 +232,11 @@ class Subscription:
 
 
 class WebhookMode(enum.Enum):
-
     subscribe = enum.auto()
     unsubscribe = enum.auto()
 
 
 class Topic(abc.ABC):
-
     valid_params = ()
     endpoint = None
 
@@ -273,7 +272,6 @@ class Topic(abc.ABC):
 
 
 class StreamChanged(Topic):
-
     valid_params = ('user_id',)
 
     endpoint = "streams"
