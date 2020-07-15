@@ -6,9 +6,15 @@ from logging import handlers
 from .cfg import Config
 
 config = Config()
+folders = [
+    'settings',
+    'settings/twitch',
+    'settings/discord',
+    'logs'
+]
 
-# Logger setup
-os.makedirs("logs", exist_ok=True)
+for f in folders:
+    os.makedirs(f, exist_ok=True)
 log_pattern = logging.Formatter("[%(asctime)s][%(levelname)s]: %(message)s")
 
 logger = logging.getLogger(__name__)

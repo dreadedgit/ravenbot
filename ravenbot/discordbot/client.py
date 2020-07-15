@@ -19,7 +19,6 @@ class Bot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, command_prefix="!", **kwargs)
-        self.load_extensions()
 
     async def on_ready(self):
         LOG.debug(f"Bot is connected | username: {self.user} | user id: {self.user.id}")
@@ -60,6 +59,7 @@ class Bot(commands.Bot):
     async def start(self, *args, **kwargs):
         try:
             token = config['discord']['client_id']
+            self.load_extensions()
             await super().start(token, *args, **kwargs)
         except ConnectionError:
             LOG.exception("Cannot connect to the websocket")

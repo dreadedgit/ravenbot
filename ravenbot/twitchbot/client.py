@@ -29,7 +29,6 @@ class Bot(commands.Bot, ABC):
             client_secret=config["twitch"]["client_secret"],
             client_id=config["twitch"]["client_id"],
         )
-        self.load_extensions()
 
     async def event_message(self, message):
         await self.handle_commands(message)
@@ -59,6 +58,7 @@ class Bot(commands.Bot, ABC):
 
     async def start(self):
         try:
+            self.load_extensions()
             await super().start()
         except ConnectionError:
             LOG.exception("Cannot connect to the websocket")
