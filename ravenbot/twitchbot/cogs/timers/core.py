@@ -35,6 +35,7 @@ class Timers:
             x -= 1
             self.tosend = self.timers["messages"][x]
         self.count = 0
+        self.previous = self.tosend
         await message.channel.send_me(self.tosend)
 
     async def message_count(self, message):
