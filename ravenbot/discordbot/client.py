@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 EXTENSIONS = {
     # 'admin',
     # 'help',
-    # 'streams'
+    'streams'
 }
 
 
@@ -19,6 +19,7 @@ class Bot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, command_prefix="!", **kwargs)
+        self.guild = None
 
     async def on_ready(self):
         LOG.debug(f"Bot is connected | username: {self.user} | user id: {self.user.id}")
