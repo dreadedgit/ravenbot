@@ -10,7 +10,7 @@ from datetime import timedelta
 from ravenbot.cfg import Config
 from ...check import is_admin
 from . import models
-import main
+from main import func
 
 config = Config()
 filename = 'settings/discord/streams.yml'
@@ -22,7 +22,6 @@ DEFAULT_STREAMS_FILE = {
     'streams': {
         'user': {
             'type': '',
-            'user_id': 0,
             'start_time': ''
         }
     },
@@ -40,7 +39,6 @@ class Streams(commands.Cog):
         self.guild = None
         self.role = None
         self.channel = None
-        self.twitch = None
         self.streams = config
         if len(self.streams['streams']) == 0:
             self.streams.update(DEFAULT_STREAMS_FILE)
@@ -48,18 +46,17 @@ class Streams(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.twitch = main.gettwitchbot()
-        self.guild = self.bot.guilds[0].channels
+        self.guild = self.bot.guilds[0]
         self.channel = discord.utils.find(lambda c: c.id == self.streams['channel']['id'], self.guild.channels)
-        self.role = discord.utils.find((lambda r: r.id == self.streams['role']['id'], self.guild.roles))
+        self.role = discord.utils.find(lambda r: r.id == self.streams['role']['id'], self.guild.roles)
         await self._check_stream()
 
     # check if channels in streams.yml are live
     async def _check_stream(self):
         while True:
             for s in self.streams["streams"]:
-                user_data = (await self.twitch.get_users(s))[0]
-                current_stream = await self.twitch.get_stream(user_data.id)
+                user_data = (await func.get_users(s))[0]
+                current_stream = await func.get_stream(user_data.id)
                 # if stream is offline
                 if not current_stream:
                     # check if stream was live
@@ -76,7 +73,7 @@ class Streams(commands.Cog):
                         # check when last stream started
                         if self._check_time(s, current_stream):
                             game_id = current_stream['game_id']
-                            game = (await self.twitch.get_games(game_id))[0]['name']
+                            game = (await func.get_games(game_id))[0]['name']
                             data = {
                                 'user_login': user_data.login,
                                 'display_name': user_data.display_name,
