@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 EXTENSIONS = {
     # 'admin',
     # 'help',
-    # 'streams'
+    'streams'
 }
 
 

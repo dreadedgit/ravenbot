@@ -18,38 +18,42 @@ config.load(filename)
 
 LOG = logging.getLogger(__name__)
 
-DEFAULT_STREAMS_FILE = {
-    'streams': {
-        'user': {
-            'type': '',
-            'start_time': ''
-        }
-    },
-    'channel_info': {
-        'name': '',
-        'id': 0
+
+def create_default_file(guilds):
+    DEFAULT_STREAMS_FILE = {
+        'servers': []
     }
-}
+    for g in guilds:
+        server = {
+            'name': g.name,
+            'id': g.id,
+            'channel': {
+                'name': '',
+                'id': 0
+            },
+            'role': {
+                'name': '',
+                'id': 0
+            },
+            'streams': []
+        }
+        DEFAULT_STREAMS_FILE['servers'].append(server)
+    return DEFAULT_STREAMS_FILE
 
 
 class Streams(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.guild = None
-        self.role = None
-        self.channel = None
         self.streams = config
-        if len(self.streams['streams']) == 0:
-            self.streams.update(DEFAULT_STREAMS_FILE)
-            self.streams.write(filename, DEFAULT_STREAMS_FILE)
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.guild = self.bot.guilds[0]
-        self.channel = discord.utils.find(lambda c: c.id == self.streams['channel']['id'], self.guild.channels)
-        self.role = discord.utils.find(lambda r: r.id == self.streams['role']['id'], self.guild.roles)
-        await self._check_stream()
+        if not self.streams.items():
+            self.streams.update(create_default_file(self.bot.guilds))
+            self.streams.write(filename, self.streams)
+        print(self.streams['servers'])
+        # await self._check_stream()
 
     # check if channels in streams.yml are live
     async def _check_stream(self):
