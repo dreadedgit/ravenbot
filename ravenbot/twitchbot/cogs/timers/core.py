@@ -43,8 +43,18 @@ class Timers:
             if not checks.has_prefix(message):
                 self.count += 1
                 if self.count == 10:
-                    await asyncio.sleep(60)
+                    await asyncio.sleep(300)
                     await self.timer_message(message)
+
+    # need to figure out sub commands or just use if else like a normie
+    # @commands.command(name='timers')
+    # async def timers_command(self, ctx):
+    #     if ctx.invoked_subcommand is None:
+    #         pass
+    #
+    # @commands.command(name='count', cls=timers_command)
+    # async def count_command(self, ctx):
+    #     print(ctx)
 
 
 def prep(bot):
