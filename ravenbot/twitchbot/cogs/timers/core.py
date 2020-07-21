@@ -40,11 +40,13 @@ class Timers:
 
     async def message_count(self, message):
         if not checks.is_bot(message.author, self.bot):
-            if not checks.has_prefix(message):
-                self.count += 1
-                if self.count == 10:
-                    await asyncio.sleep(300)
-                    await self.timer_message(message)
+            # if not checks.is_vip(message.author):
+            if not checks.is_mod(message.author):
+                if not checks.has_prefix(message):
+                    self.count += 1
+                    if self.count == 10:
+                        await asyncio.sleep(300)
+                        await self.timer_message(message)
 
     # need to figure out sub commands or just use if else like a normie
     # @commands.command(name='timers')

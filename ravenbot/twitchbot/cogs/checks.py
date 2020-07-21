@@ -17,3 +17,11 @@ def is_mod(user):
         return True
     else:
         return False
+
+
+# not sure if this works
+def is_vip(user):
+    if 'vip' in user.badges:
+        return True
+    else:
+        return False
