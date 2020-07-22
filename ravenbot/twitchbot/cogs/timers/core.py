@@ -60,12 +60,12 @@ class Timers:
         else:
             if not args or len(args) < 2:
                 await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
-                await ctx.send(f'timer length set to {self.timers["settings"]["time"]}')
+                await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
                 await ctx.send(f'usage !timers [count|time][int]')
             else:
                 if args[0] == 'count':
                     if not args[1].isnumeric():
-                        await ctx.send(f'{ctx.message.author.name} usage !timers [count|time][int]')
+                        await ctx.send(f'usage !timers [count|time][int]')
                     else:
                         self.change_setting("counter", args[1])
                         await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
@@ -74,7 +74,7 @@ class Timers:
                         await ctx.send(f'usage !timers [count|time][int]')
                     else:
                         self.change_setting("time", args[1])
-                        await ctx.send(f'timer length set to {self.timers["settings"]["time"]}')
+                        await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
 
 
 def prep(bot):
