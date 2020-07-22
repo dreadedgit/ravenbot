@@ -7,7 +7,11 @@ from .. import checks
 
 config = Config()
 DEFAULT_TIMERS_FILE = {
-    "messages": []
+    "messages": [],
+    "settings": {
+        "time": 300,
+        "counter": 10
+    }
 }
 
 filename = 'settings/twitch/timers.yml'
@@ -26,6 +30,10 @@ class Timers:
         self.tosend = ''
         self.previous = ''
 
+    def change_setting(self, setting, value):
+        self.timers["settings"][setting] = int(value)
+        self.timers.write(filename, self.timers)
+
     async def event_ready(self):
         self.bot.add_listener(self.message_count, 'event_message')
 
@@ -39,24 +47,34 @@ class Timers:
         await message.channel.send_me(self.tosend)
 
     async def message_count(self, message):
-        if not checks.is_bot(message.author, self.bot):
-            # if not checks.is_vip(message.author):
-            if not checks.is_mod(message.author):
-                if not checks.has_prefix(message):
-                    self.count += 1
-                    if self.count == 10:
-                        await asyncio.sleep(300)
-                        await self.timer_message(message)
+        if not checks.check_all(message.author, message, self.bot):
+            self.count += 1
+            if self.count == self.timers["settings"]["counter"]:
+                await asyncio.sleep(self.timers["settings"]["time"])
+                await self.timer_message(message)
 
-    # need to figure out sub commands or just use if else like a normie
-    # @commands.command(name='timers')
-    # async def timers_command(self, ctx):
-    #     if ctx.invoked_subcommand is None:
-    #         pass
-    #
-    # @commands.command(name='count', cls=timers_command)
-    # async def count_command(self, ctx):
-    #     print(ctx)
+    @commands.command(name='timers')
+    async def timers_command(self, ctx, *args):
+        if not ctx.message.author.is_mod:
+            await ctx.send(f'{ctx.message.author.name} only mods are permitted to use this command')
+        else:
+            if not args or len(args) < 2:
+                await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
+                await ctx.send(f'timer length set to {self.timers["settings"]["time"]}')
+                await ctx.send(f'usage !timers [count|time][int]')
+            else:
+                if args[0] == 'count':
+                    if not args[1].isnumeric():
+                        await ctx.send(f'{ctx.message.author.name} usage !timers [count|time][int]')
+                    else:
+                        self.change_setting("counter", args[1])
+                        await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
+                elif args[0] == 'time':
+                    if not args[1].isnumeric():
+                        await ctx.send(f'usage !timers [count|time][int]')
+                    else:
+                        self.change_setting("time", args[1])
+                        await ctx.send(f'timer length set to {self.timers["settings"]["time"]}')
 
 
 def prep(bot):

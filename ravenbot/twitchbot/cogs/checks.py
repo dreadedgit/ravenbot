@@ -19,9 +19,24 @@ def is_mod(user):
         return False
 
 
-# not sure if this works
 def is_vip(user):
     if 'vip' in user.badges:
         return True
     else:
         return False
+
+
+def check_all(user, message, bot):
+    if is_bot(user, bot):
+        return True
+    else:
+        if is_mod(user):
+            return True
+        else:
+            if is_vip(user):
+                return True
+            else:
+                if has_prefix(message):
+                    return True
+                else:
+                    return False
