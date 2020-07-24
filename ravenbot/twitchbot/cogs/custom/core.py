@@ -55,7 +55,7 @@ class CustomCommands:
                     tosend = f"@{ctx.author.name} command \'{args[0]}\' already exists"
             else:
                 tosend = f"@{ctx.author.name} unable to add command, no response specified"
-        await ctx.send(tosend)
+        await ctx.send_me(tosend)
 
     @commands.command()
     async def delcom(self, ctx, name):
@@ -67,7 +67,7 @@ class CustomCommands:
             else:
                 utils.delete(self.customcoms, "commands", name, filename)
                 tosend = f"@{ctx.author.name} command \'{name}\' deleted"
-        await ctx.send(tosend)
+        await ctx.send_me(tosend)
 
 
 def prep(bot):
