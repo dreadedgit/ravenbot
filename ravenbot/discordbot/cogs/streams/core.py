@@ -6,7 +6,7 @@ import discord
 from discord import errors
 from discord.ext import commands
 
-from datetime import timedelta
+from datetime import timedelta, date
 from ravenbot.cfg import Config
 from ...check import is_admin
 from . import models
@@ -111,7 +111,7 @@ class Streams(commands.Cog):
         await self.channel.send(content=f'{self.role.mention}', embed=new_embed)
 
     def _check_time(self, user, stream):
-        delta = timedelta(self.streams["streams"][user]['start_time'] - stream['started_at'])
+        delta = timedelta(date(self.streams["streams"][user]['start_time']) - stream['started_at'])
         if delta.total_seconds() < 600:
             return False
         else:

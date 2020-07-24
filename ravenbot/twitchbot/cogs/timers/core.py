@@ -3,14 +3,14 @@ from random import randint
 
 from twitchio.ext import commands
 from ravenbot import Config
-from .. import checks
+from .. import checks, utils
 
 config = Config()
 DEFAULT_TIMERS_FILE = {
-    "messages": [],
+    "messages": {},
     "settings": {
         "time": 300,
-        "counter": 10
+        "count": 10
     }
 }
 
@@ -30,10 +30,6 @@ class Timers:
         self.tosend = ''
         self.previous = ''
 
-    def change_setting(self, setting, value):
-        self.timers["settings"][setting] = int(value)
-        self.timers.write(filename, self.timers)
-
     async def event_ready(self):
         self.bot.add_listener(self.message_count, 'event_message')
 
@@ -41,7 +37,7 @@ class Timers:
         while self.tosend == self.previous:
             x = randint(1, len(self.timers["messages"]))
             x -= 1
-            self.tosend = self.timers["messages"][x]
+            self.tosend = list(self.timers["messages"].values())[x]
         self.count = 0
         self.previous = self.tosend
         await message.channel.send_me(self.tosend)
@@ -56,25 +52,52 @@ class Timers:
     @commands.command(name='timers')
     async def timers_command(self, ctx, *args):
         if not ctx.message.author.is_mod:
-            await ctx.send(f'{ctx.message.author.name} only mods are permitted to use this command')
+            await ctx.send(f'{ctx.author.name} only mods are permitted to use this command')
         else:
             if not args or len(args) < 2:
                 await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
                 await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
-                await ctx.send(f'usage !timers [count|time][int]')
+                await ctx.send('usage !timers [count|time][int]')
             else:
-                if args[0] == 'count':
-                    if not args[1].isnumeric():
-                        await ctx.send(f'usage !timers [count|time][int]')
+                if not args[1].isnumeric():
+                    await ctx.send('usage !timers [count|time][int]')
+                else:
+                    if args[0] == 'count' or args[0] == 'time':
+                        utils.add_item(self.timers, "settings", args[0], int(args[1]), filename)
+                        if args[0] == 'count':
+                            await ctx.send(f'timer trigger set to {self.timers["settings"]["count"]} messages')
+                        elif args[0] == 'time':
+                            await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
                     else:
-                        self.change_setting("counter", args[1])
-                        await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
-                elif args[0] == 'time':
-                    if not args[1].isnumeric():
-                        await ctx.send(f'usage !timers [count|time][int]')
-                    else:
-                        self.change_setting("time", args[1])
-                        await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
+                        await ctx.send('usage !timers [count|time][int]')
+
+    @commands.command(name='addtimer')
+    async def add_timer(self, ctx, *args):
+        if not checks.is_mod(ctx.author):
+            tosend = f"@{ctx.author.name} only mods can add commands"
+        else:
+            if len(args) >= 2:
+                if not utils.contains(self.timers, "messages", args[0]):
+                    response = ' '.join(args[1:])
+                    utils.add_item(self.timers, "messages", args[0], str(response), filename)
+                    tosend = f"@{ctx.author.name} timer \'{args[0]}\' added"
+                else:
+                    tosend = f"@{ctx.author.name} timer \'{args[0]}\' already exists"
+            else:
+                tosend = f"@{ctx.author.name} unable to add timer, no message specified"
+        await ctx.send(tosend)
+
+    @commands.command(name='deltimer')
+    async def delcom(self, ctx, name):
+        if not checks.is_mod(ctx.author):
+            tosend = f"@{ctx.author.name} only mods can delete timers"
+        else:
+            if not utils.contains(self.timers, "messages", name):
+                tosend = f"@{ctx.author.name} timer \'{name}\' does not exist"
+            else:
+                utils.delete(self.timers, "messages", name, filename)
+                tosend = f"@{ctx.author.name} timer \'{name}\' deleted"
+        await ctx.send(tosend)
 
 
 def prep(bot):

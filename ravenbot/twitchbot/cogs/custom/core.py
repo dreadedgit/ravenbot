@@ -2,13 +2,11 @@ import asyncio
 
 from twitchio.ext import commands
 from ravenbot import Config
-from .. import checks
+from .. import checks, utils
 
 config = Config()
 DEFAULT_COMMANDS_FILE = {
-    "commands": {
-        "name": "response"
-    }
+    "commands": {}
 }
 
 filename = 'settings/twitch/commands.yml'
@@ -25,19 +23,6 @@ class CustomCommands:
             self.customcoms.update(DEFAULT_COMMANDS_FILE)
             self.customcoms.write(filename, DEFAULT_COMMANDS_FILE)
 
-    def is_command(self, name):
-        if name in self.customcoms["commands"]:
-            return True
-
-    def new_command(self, name, response):
-        self.customcoms["commands"][name] = response
-        self.customcoms.write(filename, self.customcoms)
-
-    def delete_command(self, name):
-        if self.is_command(name):
-            self.customcoms["commands"].pop(name)
-        self.customcoms.write(filename, self.customcoms)
-
     def get_response(self, name):
         if self.is_command(name):
             return self.customcoms["commands"].get(name)
@@ -52,7 +37,7 @@ class CustomCommands:
                     await asyncio.sleep(3)
                     self.cooldown = False
                 else:
-                    if self.is_command(message.content.strip('!')):
+                    if utils.contains(self.customcoms, "commands", message.content.strip('!')):
                         await message.channel.send(self.get_response(message.content.strip('!')))
                         self.cooldown = True
 
@@ -61,12 +46,15 @@ class CustomCommands:
         if not checks.is_mod(ctx.author):
             tosend = f"@{ctx.author.name} only mods can add commands"
         else:
-            if not self.is_command(args[0]):
-                response = ' '.join(args[1:])
-                self.new_command(args[0], response)
-                tosend = f"@{ctx.author.name} command \'{args[0]}\' added"
+            if len(args) >= 2:
+                if not utils.contains(self.customcoms, "commands", args[0]):
+                    response = ' '.join(args[1:])
+                    utils.add_item(self.customcoms, "commands", args[0], response, filename)
+                    tosend = f"@{ctx.author.name} command \'{args[0]}\' added"
+                else:
+                    tosend = f"@{ctx.author.name} command \'{args[0]}\' already exists"
             else:
-                tosend = f"@{ctx.author.name} command \'{args[0]}\' already exists"
+                tosend = f"@{ctx.author.name} unable to add command, no response specified"
         await ctx.send(tosend)
 
     @commands.command()
@@ -74,10 +62,10 @@ class CustomCommands:
         if not checks.is_mod(ctx.author):
             tosend = f"@{ctx.author.name} only mods can delete commands"
         else:
-            if not self.is_command(name):
+            if not utils.contains(self.customcoms, "commands", name):
                 tosend = f"@{ctx.author.name} command \'{name}\' does not exist"
             else:
-                self.delete_command(name)
+                utils.delete(self.customcoms, "commands", name, filename)
                 tosend = f"@{ctx.author.name} command \'{name}\' deleted"
         await ctx.send(tosend)
 
