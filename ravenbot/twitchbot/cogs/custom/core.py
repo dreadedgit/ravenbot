@@ -24,7 +24,7 @@ class CustomCommands:
             self.customcoms.write(filename, DEFAULT_COMMANDS_FILE)
 
     def get_response(self, name):
-        if self.is_command(name):
+        if utils.contains(self.customcoms, "commands", name):
             return self.customcoms["commands"].get(name)
 
     async def event_ready(self):
