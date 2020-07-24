@@ -76,15 +76,18 @@ class Timers:
         if not checks.is_mod(ctx.author):
             tosend = f"@{ctx.author.name} only mods can add commands"
         else:
-            if len(args) >= 2:
+            if len(args) > 0:
                 if not utils.contains(self.timers, "messages", args[0]):
-                    response = ' '.join(args[1:])
-                    utils.add_item(self.timers, "messages", args[0], str(response), filename)
-                    tosend = f"@{ctx.author.name} timer \'{args[0]}\' added"
+                    if len(args) >= 2:
+                        response = ' '.join(args[1:])
+                        utils.add_item(self.timers, "messages", args[0], str(response), filename)
+                        tosend = f"@{ctx.author.name} timer \'{args[0]}\' added"
+                    else:
+                        tosend = f"@{ctx.author.name} unable to add timer, no message specified"
                 else:
                     tosend = f"@{ctx.author.name} timer \'{args[0]}\' already exists"
             else:
-                tosend = f"@{ctx.author.name} unable to add timer, no message specified"
+                tosend = 'usage !addtimer [identifier] [message]'
         await ctx.send_me(tosend)
 
     @commands.command(name='deltimer')

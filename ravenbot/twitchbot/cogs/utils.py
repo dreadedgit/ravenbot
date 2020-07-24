@@ -10,8 +10,5 @@ def delete(data, d, name, file):
 
 
 def add_item(data, d, name, response, file):
-    if str(response).isnumeric():
-        data[d][name] = response
-    else:
-        data[d][name] = str(response)
+    data[d][name] = response
     data.write(file, data)

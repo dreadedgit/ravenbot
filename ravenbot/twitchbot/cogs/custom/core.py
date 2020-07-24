@@ -46,15 +46,18 @@ class CustomCommands:
         if not checks.is_mod(ctx.author):
             tosend = f"@{ctx.author.name} only mods can add commands"
         else:
-            if len(args) >= 2:
+            if len(args) > 0:
                 if not utils.contains(self.customcoms, "commands", args[0]):
-                    response = ' '.join(args[1:])
-                    utils.add_item(self.customcoms, "commands", args[0], response, filename)
-                    tosend = f"@{ctx.author.name} command \'{args[0]}\' added"
+                    if len(args) >= 2:
+                        response = ' '.join(args[1:])
+                        utils.add_item(self.customcoms, "commands", args[0], response, filename)
+                        tosend = f"@{ctx.author.name} command \'{args[0]}\' added"
+                    else:
+                        tosend = f"@{ctx.author.name} unable to add command, no response specified"
                 else:
                     tosend = f"@{ctx.author.name} command \'{args[0]}\' already exists"
             else:
-                tosend = f"@{ctx.author.name} unable to add command, no response specified"
+                tosend = "usage !addcom [name] [response]"
         await ctx.send_me(tosend)
 
     @commands.command()
