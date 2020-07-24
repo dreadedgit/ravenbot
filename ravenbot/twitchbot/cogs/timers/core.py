@@ -45,7 +45,7 @@ class Timers:
     async def message_count(self, message):
         if not checks.check_all(message.author, message, self.bot):
             self.count += 1
-            if self.count == self.timers["settings"]["counter"]:
+            if self.count == self.timers["settings"]["count"]:
                 await asyncio.sleep(self.timers["settings"]["time"])
                 await self.timer_message(message)
 
@@ -55,7 +55,7 @@ class Timers:
             await ctx.send(f'{ctx.author.name} only mods are permitted to use this command')
         else:
             if not args or len(args) < 2:
-                await ctx.send(f'timer trigger set to {self.timers["settings"]["counter"]} messages')
+                await ctx.send(f'timer trigger set to {self.timers["settings"]["count"]} messages')
                 await ctx.send(f'timer length set to {self.timers["settings"]["time"]} seconds')
                 await ctx.send('usage !timers [count|time][int]')
             else:
