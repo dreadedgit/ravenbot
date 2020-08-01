@@ -18,7 +18,6 @@ class CustomCommands:
     def __init__(self, bot):
         self.bot = bot
         self.customcoms = config
-        self.cooldown = False
         if len(self.customcoms) == 0:
             self.customcoms.update(DEFAULT_COMMANDS_FILE)
             self.customcoms.write(filename, DEFAULT_COMMANDS_FILE)
@@ -33,13 +32,9 @@ class CustomCommands:
     async def handle_custom_commands(self, message):
         if not checks.is_bot(message.author, self.bot):
             if checks.has_prefix(message):
-                if self.cooldown:
-                    await asyncio.sleep(3)
-                    self.cooldown = False
-                else:
-                    if utils.contains(self.customcoms, "commands", message.content.strip('!')):
-                        await message.channel.send(self.get_response(message.content.strip('!')))
-                        self.cooldown = True
+                if utils.contains(self.customcoms, "commands", message.content.strip('!')):
+                    await message.channel.send(self.get_response(message.content.strip('!')))
+                    await asyncio.sleep(2)
 
     @commands.command()
     async def addcom(self, ctx, *args):

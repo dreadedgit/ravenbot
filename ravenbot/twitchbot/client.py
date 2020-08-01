@@ -20,7 +20,7 @@ EXTENSIONS = {
 
 class Bot(commands.Bot, ABC):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         super().__init__(
             irc_token=config["twitch"]["irc_token"],
             prefix="!",
