@@ -9,7 +9,6 @@ from ravenbot import config
 LOG = logging.getLogger(__name__)
 
 EXTENSIONS = {
-    'timers',
     'custom',
     # 'quotes',
     # 'mod',
